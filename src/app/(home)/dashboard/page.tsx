@@ -1,0 +1,81 @@
+'use client';
+
+import {ArrowUpRight, Calendar, DollarSign, TrendingUp, Users} from 'lucide-react';
+
+export default function DashboardPage() {
+    // Dados fictícios para os cards
+    const stats = [
+        {label: 'Total de Clientes', value: '1,284', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50'},
+        {label: 'Agendamentos Hoje', value: '42', icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50'},
+        {label: 'Taxa de Conversão', value: '12.5%', icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50'},
+        {label: 'Faturamento Mês', value: 'R$ 12.450', icon: DollarSign, color: 'text-amber-600', bg: 'bg-amber-50'},
+    ];
+
+    return (
+        <div className="space-y-8">
+            {/* Cabeçalho da Página */}
+            <div>
+                <h1 className="text-2xl font-bold text-gray-800">Dashboard de Controle</h1>
+                <p className="text-gray-500 text-sm">Bem-vindo ao painel administrativo do MarkNow.</p>
+            </div>
+
+            {/* Grid de Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.map((stat, index) => (
+                    <div key={index}
+                         className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color}`}>
+                                <stat.icon size={24}/>
+                            </div>
+                            <span
+                                className="text-green-500 text-xs font-bold flex items-center bg-green-50 px-2 py-1 rounded-lg">
+                <ArrowUpRight size={14}/> +4%
+              </span>
+                        </div>
+                        <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
+                        <h3 className="text-2xl font-black text-gray-800 mt-1">{stat.value}</h3>
+                    </div>
+                ))}
+            </div>
+
+            {/* Área de Conteúdo Inferior (Exemplo: Tabela ou Gráfico) */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Card de Atividades Recentes */}
+                <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                    <h3 className="font-bold text-gray-800 mb-6">Atividades Recentes</h3>
+                    <div className="space-y-6">
+                        {[1, 2, 3].map((item) => (
+                            <div key={item}
+                                 className="flex items-center gap-4 border-b border-gray-50 pb-4 last:border-0">
+                                <div
+                                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold">
+                                    {item}
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm font-semibold text-gray-700">Novo agendamento realizado</p>
+                                    <p className="text-xs text-gray-400">Há 15 minutos por João da Silva</p>
+                                </div>
+                                <span
+                                    className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Pendente</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Card de Atalhos Rápidos */}
+                <div className="bg-[#2D0066] rounded-3xl p-6 text-white flex flex-col justify-between">
+                    <div>
+                        <h3 className="font-bold text-lg mb-2">Precisa de ajuda?</h3>
+                        <p className="text-purple-200 text-sm">Confira nossa documentação para configurar novos
+                            prestadores.</p>
+                    </div>
+                    <button
+                        className="bg-white text-[#2D0066] font-bold py-3 rounded-2xl mt-6 hover:bg-purple-50 transition-colors">
+                        Ver Documentação
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}

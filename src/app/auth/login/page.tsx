@@ -1,32 +1,11 @@
 'use client';
 
-import {useState} from 'react';
-import {useRouter} from 'next/navigation';
-import {api} from '@/services/api';
 import {Loader2, Lock, LogIn, Mail} from 'lucide-react';
+import {useLoginController} from "@/app/auth/login/loginController";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const router = useRouter();
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-
-        try {
-            const response = await api.post('/auth/login', {email, senha});
-            localStorage.setItem('marknow_token', response.data.token);
-            router.push('/dashboard');
-        } catch (err: any) {
-            setError('E-mail ou senha inválidos. Tente novamente.');
-        } finally {
-            setLoading(false);
-        }
-    }
+    const {email, setEmail, senha, setSenha, loading, error, handleSubmit} = useLoginController();
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
