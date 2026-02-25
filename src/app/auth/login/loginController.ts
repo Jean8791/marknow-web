@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useRouter} from "next/navigation"; // No Next.js 13+ use navigation
+import {useRouter} from "next/navigation";
 import {api} from "@/services/api";
 import {AxiosError} from "axios";
 
@@ -10,8 +10,8 @@ export const useLoginController = () => {
     const [error, setError] = useState('');
     const router = useRouter();
 
-    const [email, setEmail] = useState('jean@email.com');
-    const [senha, setSenha] = useState('@Senha@123');
+    const [email, setEmail] = useState('admin@marknow.com.br');
+    const [senha, setSenha] = useState('admin123');
 
     async function handleSubmit(e: React.SyntheticEvent) {
         e.preventDefault();
@@ -22,16 +22,17 @@ export const useLoginController = () => {
         try {
             const response = await api.post<LoginResponseDTO>('/auth/login', {email, senha} as LoginRequestDTO);
 
-            // Dica: use um prefixo no localStorage para evitar conflitos
-            localStorage.setItem('@MarkNow:token', response.data.token);
+            const { token, usuario } = response.data;
+
+            localStorage.setItem('@MarkNow:token', token);
+            localStorage.setItem('@MarkNow:user-name', usuario.nome);
+            localStorage.setItem('@MarkNow:user-role', usuario.perfil);
 
             router.push('/dashboard');
         } catch (err) {
-            // Verificamos se o erro é uma instância do AxiosError
+
             const axiosError = err as AxiosError<{ message: string }>;
 
-            // Pegamos a mensagem que vem do seu Backend (Quarkus)
-            // Se não houver mensagem, usamos uma padrão
             const errorMessage = axiosError.response?.data?.message || 'Erro ao conectar com o servidor.';
 
             setError(errorMessage);
