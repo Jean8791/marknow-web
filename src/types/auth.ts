@@ -1,15 +1,18 @@
-// DTO que o Front envia para o Login
+export type LoginResponseRole = 'ADMIN' | 'OPERACIONAL' | 'SUPER_ADMIN';
+
+interface UsuarioDTO {
+    oid: string;
+    nome: string;
+    email: string;
+    perfil: LoginResponseRole;
+}
+
+export interface LoginResponseDTO {
+    token: string;
+    usuario: UsuarioDTO;
+}
+
 export interface LoginRequestDTO {
     email: string;
     senha: string;
-}
-
-// DTO que o Backend (Quarkus) devolve no sucesso
-export interface LoginResponseDTO {
-    token: string;
-    usuario: {
-        oid: string;
-        nome: string;
-        perfil: 'ADMIN' | 'OPERACIONAL';
-    };
 }

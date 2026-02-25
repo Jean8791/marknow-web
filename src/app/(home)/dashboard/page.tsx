@@ -62,20 +62,8 @@ export default function DashboardPage() {
                         ))}
                     </div>
                 </div>
-
-                {/* Card de Atalhos Rápidos */}
-                <div className="bg-[#2D0066] rounded-3xl p-6 text-white flex flex-col justify-between">
-                    <div>
-                        <h3 className="font-bold text-lg mb-2">Precisa de ajuda?</h3>
-                        <p className="text-purple-200 text-sm">Confira nossa documentação para configurar novos
-                            prestadores.</p>
-                    </div>
-                    <button
-                        className="bg-white text-[#2D0066] font-bold py-3 rounded-2xl mt-6 hover:bg-purple-50 transition-colors">
-                        Ver Documentação
-                    </button>
-                </div>
             </div>
+
         </div>
     );
 }
