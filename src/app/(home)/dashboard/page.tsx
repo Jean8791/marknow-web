@@ -1,7 +1,7 @@
 'use client';
 
 import {ArrowUpRight} from 'lucide-react';
-import {useDashboardController} from "@/app/(home)/dashboard/dashboardController";
+import {useDashboardController} from "@/app/(home)/dashboard/useDashboardController";
 
 export default function DashboardPage() {
 

@@ -1,83 +1,120 @@
 'use client';
 
-import { Plus, Search, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import {Plus, Search} from 'lucide-react';
 import Link from 'next/link';
+import DataTable, {Column} from '@/components/common/DataTable';
+import {Prestador, usePrestadorListController} from './usePrestadorListController';
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 export default function PrestadoresList() {
+    const {
+        prestadores,
+        currentPage,
+        pageSize,
+        totalElements,
+        totalPages,
+        isLoading,
+        modalConfig,
+        setModalConfig,
+        openDeleteModal,
+        handleEdit,
+        handleDelete,
+        handlePageChange,
+        handlePageSizeChange,
+        handleSearch
+    } = usePrestadorListController();
+
+    const columns: Column<Prestador>[] = [
+        {
+            header: 'Prestador',
+            key: 'nome',
+            render: (item) => (
+                <div className="flex items-center gap-3">
+                    <div
+                        className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 font-bold uppercase text-xs">
+                        {item.nome.substring(0, 2)}
+                    </div>
+                    <div>
+                        <p className="font-bold text-gray-700 leading-tight">{item.nome}</p>
+                        <p className="text-[11px] text-gray-400">{item.documento}</p>
+                    </div>
+                </div>
+            )
+        },
+        {
+            header: 'Contato',
+            key: 'email',
+            render: (item) => (
+                <div>
+                    <p className="text-sm text-gray-600">{item.email}</p>
+                    <p className="text-xs text-gray-400 font-medium">{item.telefone}</p>
+                </div>
+            )
+        },
+        {
+            header: 'Status',
+            key: 'status',
+            render: (item) => (
+                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                    item.status === 'Ativo' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'
+                }`}>
+                    {item.status}
+                </span>
+            )
+        }
+    ];
+
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Prestadores</h1>
-                    <p className="text-sm text-gray-500">Gerencie as unidades e parceiros da plataforma.</p>
+                    <h1 className="text-2xl font-black text-gray-800 tracking-tight">Prestadores</h1>
+                    <p className="text-sm text-gray-500 font-medium">Gestão de unidades e parceiros MarkNow.</p>
                 </div>
 
-                <Link
-                    href="/prestador/novo"
-                    className="bg-[#2D0066] text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all"
-                >
-                    <Plus size={20} />
+                <Link href="/prestador/novo"
+                      className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-xl shadow-purple-100 active:scale-95">
+                    <Plus size={20}/>
                     Novo Prestador
                 </Link>
             </div>
 
-            {/* Filtros Rápidos */}
-            <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex gap-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+                <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18}/>
                     <input
                         type="text"
-                        placeholder="Buscar por nome ou CNPJ..."
-                        className="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm"
+                        placeholder="Pesquisar por nome, documento ou e-mail..."
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium transition-all"
                     />
                 </div>
             </div>
 
-            {/* Tabela */}
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-100">
-                    <tr>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase">Prestador</th>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase">Contato</th>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase">Status</th>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase text-center">Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                    <tr className="hover:bg-gray-50/50 transition-colors">
-                        <td className="px-6 py-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 font-bold">
-                                    CN
-                                </div>
-                                <div>
-                                    <p className="font-bold text-gray-700">CodeNest Solutions</p>
-                                    <p className="text-xs text-gray-400">12.345.678/0001-90</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <p className="text-sm text-gray-600">contato@codenest.com.br</p>
-                            <p className="text-xs text-gray-400">(47) 99999-9999</p>
-                        </td>
-                        <td className="px-6 py-4">
-                            <span className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold">Ativo</span>
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="flex justify-center gap-2">
-                                <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
-                                    <Edit size={18} />
-                                </button>
-                                <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all">
-                                    <Trash2 size={18} />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <DataTable
+                columns={columns}
+                data={prestadores}
+                onEdit={handleEdit}
+                onDelete={openDeleteModal}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalElements={totalElements}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
+                isLoading={isLoading}
+            />
+
+            {/* Modal de Confirmação */}
+            <ConfirmModal
+                isOpen={modalConfig.isOpen}
+                onClose={() => setModalConfig({isOpen: false, item: null})}
+                onConfirm={handleDelete}
+                title="Excluir Prestador"
+                message={`Tem certeza que deseja excluir o prestador ${modalConfig.item?.nome}? Esta ação não poderá ser desfeita.`}
+                confirmText="Sim, excluir"
+                variant="danger"
+            />
         </div>
     );
 }
