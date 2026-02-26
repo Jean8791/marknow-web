@@ -1,18 +1,15 @@
 'use client';
 
-import {ArrowUpRight, Calendar, DollarSign, TrendingUp, Users} from 'lucide-react';
+import {ArrowUpRight} from 'lucide-react';
+import {useDashboardController} from "@/app/(home)/dashboard/dashboardController";
 
 export default function DashboardPage() {
-    // Dados fictícios para os cards
-    const stats = [
-        {label: 'Total de Clientes', value: '1,284', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50'},
-        {label: 'Agendamentos Hoje', value: '42', icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50'},
-        {label: 'Taxa de Conversão', value: '12.5%', icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50'},
-        {label: 'Faturamento Mês', value: 'R$ 12.450', icon: DollarSign, color: 'text-amber-600', bg: 'bg-amber-50'},
-    ];
+
+    const {stats} = useDashboardController();
 
     return (
         <div className="space-y-8">
+
             {/* Cabeçalho da Página */}
             <div>
                 <h1 className="text-2xl font-bold text-gray-800">Dashboard de Controle</h1>
