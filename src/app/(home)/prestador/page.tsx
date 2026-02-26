@@ -15,6 +15,7 @@ export default function PrestadoresList() {
         totalPages,
         isLoading,
         modalConfig,
+        isSuperAdmin,
         setModalConfig,
         openDeleteModal,
         handleEdit,
@@ -72,11 +73,15 @@ export default function PrestadoresList() {
                     <p className="text-sm text-gray-500 font-medium">Gestão de unidades e parceiros MarkNow.</p>
                 </div>
 
-                <Link href="/prestador/novo"
-                      className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-xl shadow-purple-100 active:scale-95">
-                    <Plus size={20}/>
-                    Novo Prestador
-                </Link>
+                {/* SÓ MOSTRA O BOTÃO SE FOR SUPER_ADMIN */}
+                {isSuperAdmin && (
+                    <Link href="/prestador/novo"
+                          className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-xl shadow-purple-100 active:scale-95">
+                        <Plus size={20}/>
+                        Novo Prestador
+                    </Link>
+                )}
+
             </div>
 
             <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">

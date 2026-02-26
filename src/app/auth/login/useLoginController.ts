@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {api} from "@/services/api";
 import {AxiosError} from "axios";
+import Cookies from 'js-cookie';
 
 import {LoginRequestDTO, LoginResponseDTO} from '@/types/auth';
 
@@ -21,12 +22,17 @@ export const useLoginController = () => {
 
         try {
             const response = await api.post<LoginResponseDTO>('/auth/login', {email, senha} as LoginRequestDTO);
+            Cookies.remove('marknow_role', { path: '/' });
+            Cookies.remove('marknow_token', { path: '/' });
 
-            const { token, usuario } = response.data;
+            const {token, usuario} = response.data;
 
             localStorage.setItem('@MarkNow:token', token);
             localStorage.setItem('@MarkNow:user-name', usuario.nome);
             localStorage.setItem('@MarkNow:user-role', usuario.perfil);
+
+            Cookies.set('marknow_role', usuario.perfil, {expires: 1, path: '/', sameSite: 'lax'});
+            Cookies.set('marknow_token', token, {expires: 1, path: '/', sameSite: 'lax'});
 
             router.push('/dashboard');
         } catch (err) {
