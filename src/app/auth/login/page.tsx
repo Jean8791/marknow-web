@@ -1,7 +1,7 @@
 'use client';
 
 import {Loader2, Lock, LogIn, Mail} from 'lucide-react';
-import {useLoginController} from "@/app/auth/login/loginController";
+import {useLoginController} from "@/app/auth/login/useLoginController";
 
 export default function LoginPage() {
 
