@@ -3,6 +3,7 @@
 import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {Bell, ChevronDown, LogOut, Search, Settings, User} from 'lucide-react';
+import Cookies from "js-cookie";
 
 export default function HomeHeader() {
     const router = useRouter();
@@ -22,6 +23,8 @@ export default function HomeHeader() {
 
     const handleLogout = () => {
         localStorage.clear();
+        Cookies.remove('marknow_role', {path: '/'});
+        Cookies.remove('marknow_token', {path: '/'});
         router.push('/auth/login');
     };
 

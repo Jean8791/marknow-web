@@ -22,6 +22,7 @@ export function usePrestadorListController() {
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [userRole, setUserRole] = useState<string | null>(null);
 
     // Controle do Modal
     const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; item: Prestador | null; }>({
@@ -34,8 +35,18 @@ export function usePrestadorListController() {
     };
 
     useEffect(() => {
+        // Pega o perfil salvo no login (lembra do que configuramos no Quarkus?)
+        const role = localStorage.getItem('@MarkNow:user-role');
+        setUserRole(role);
+
+        // Bloqueio de Segurança: Se não for SUPER_ADMIN, redireciona para fora da lista
+        if (role && role !== 'SUPER_ADMIN') {
+            router.push('/dashboard');
+        }
         fetchPrestadores();
     }, [currentPage, pageSize, search]);
+
+    const isSuperAdmin = userRole === 'SUPER_ADMIN';
 
     const fetchPrestadores = async () => {
         setIsLoading(true);
@@ -105,6 +116,8 @@ export function usePrestadorListController() {
         totalPages,
         isLoading,
         modalConfig, // Exportado para a View
+        isSuperAdmin,
+        userRole,
         setModalConfig, // Exportado para fechar o modal
         openDeleteModal, // Exportado para o botão da tabela
         handleEdit,
