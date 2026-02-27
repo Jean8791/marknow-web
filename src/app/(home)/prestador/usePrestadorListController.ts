@@ -3,15 +3,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {api} from "@/services/api";
-
-export interface Prestador {
-    oid: string;
-    nome: string;
-    documento: string;
-    email: string;
-    telefone: string;
-    status: 'Ativo' | 'Inativo';
-}
+import {Prestador} from "@/types/prestador";
 
 export function usePrestadorListController() {
     const router = useRouter();
@@ -33,6 +25,19 @@ export function usePrestadorListController() {
         isOpen: false,
         item: null
     });
+
+    // Adicione isso dentro do seu hook controller
+    const [drawerConfig, setDrawerConfig] = useState<{
+        isOpen: boolean;
+        item: Prestador | null;
+    }>({
+        isOpen: false,
+        item: null
+    });
+
+    const openDetails = (item: Prestador) => {
+        setDrawerConfig({isOpen: true, item});
+    };
 
     /**
      * 1. Função de busca estabilizada com useCallback.
@@ -154,6 +159,9 @@ export function usePrestadorListController() {
         handleDelete,
         handlePageChange,
         handlePageSizeChange,
-        handleSearch
+        handleSearch,
+        drawerConfig,
+        setDrawerConfig,
+        openDetails
     };
 }
