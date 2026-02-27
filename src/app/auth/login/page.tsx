@@ -1,49 +1,109 @@
+// src/app/auth/login/page.tsx
 'use client';
 
-import {Loader2, Lock, LogIn, Mail} from 'lucide-react';
-import {useLoginController} from "@/app/auth/login/useLoginController";
+import {useEffect, useState} from 'react';
+import {Eye, EyeOff, Loader2, Lock, LogIn, Mail} from 'lucide-react';
+import Link from 'next/link';
+import {useLoginController} from "./useLoginController";
 
 export default function LoginPage() {
-
-    const {email, setEmail, senha, setSenha, loading, error, handleSubmit} = useLoginController();
+    const {loading, error, handleSubmit} = useLoginController();
+    const [showPassword, setShowPassword] = useState(false);
+    console.log("A TELA RECARREGOU!");
+    useEffect(() => {
+        console.log("LoginPage montada/atualizada. Erro atual:", error);
+    }, [error]);
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-            <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                <div className="text-center">
-                    <h1 className="text-3xl font-extrabold text-blue-600">MarkNow</h1>
-                    <p className="mt-2 text-sm text-gray-500">Entre na sua conta para gerenciar convites</p>
-                </div>
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans leading-relaxed">
+            <div className="w-full max-w-[440px] bg-white p-8 md:p-12 rounded-[40px] shadow-sm border border-gray-100">
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <header className="text-center mb-10">
+                    <h1 className="text-4xl font-black italic text-[#2D0066] tracking-tighter uppercase mb-2">
+                        Mark<span className="text-purple-500">Now</span>
+                    </h1>
+                    <p className="text-gray-500 font-medium tracking-tight">
+                        Acesse para gerenciar sua unidade.
+                    </p>
+                </header>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400"/>
-                            <input type="email" required
-                                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                                   placeholder="Seu e-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        {/* Input Email */}
+                        <div className="space-y-1">
+                            <label
+                                className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">E-mail</label>
+                            <div className="relative group">
+                                <Mail
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-purple-500 transition-colors"/>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    required
+                                    defaultValue="admin@barbeariamark.com.br"
+                                    placeholder="seu@email.com"
+                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-purple-100 focus:ring-4 focus:ring-purple-50 outline-none transition-all text-sm font-semibold"
+                                />
+                            </div>
                         </div>
 
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400"/>
-                            <input type="password" required
-                                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                                   placeholder="Sua senha" value={senha} onChange={(e) => setSenha(e.target.value)}/>
+                        {/* Input Senha */}
+                        <div className="space-y-1">
+                            <div className="flex justify-between items-center px-1">
+                                <label
+                                    className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Senha</label>
+                                <Link href="/auth/forgot-password" className="text-[10px] font-bold text-purple-600 hover:text-purple-800 uppercase tracking-widest">Esqueceu?</Link>
+                            </div>
+                            <div className="relative group">
+                                <Lock
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-purple-500 transition-colors"/>
+                                <input
+                                    name="senha"
+                                    type={showPassword ? "text" : "password"}
+                                    required
+                                    defaultValue="SenhaForte#2026"
+                                    placeholder="••••••••"
+                                    className="w-full pl-12 pr-12 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-purple-100 focus:ring-4 focus:ring-purple-50 outline-none transition-all text-sm font-semibold"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-purple-600 transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                    {/* Espaço fixo para Erro para evitar saltos na UI */}
+                    <div className="min-h-[50px] flex items-center">
+                        {error && (
+                            <div
+                                className="w-full bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl border border-red-100 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse shrink-0"/>
+                                <span>{error}</span>
+                            </div>
+                        )}
+                    </div>
 
-                    <button type="submit" disabled={loading}
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition disabled:opacity-70">
-                        {loading ? (
-                            <Loader2 className="animate-spin h-5 w-5"/>
-                        ) : (
-                            <span className="flex items-center gap-2">
-                                <LogIn className="h-5 w-5"/> Acessar Painel
-                            </span>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 bg-[#2D0066] text-white text-sm font-bold rounded-2xl hover:bg-purple-900 focus:ring-4 focus:ring-purple-100 transition-all disabled:opacity-50 shadow-lg shadow-purple-50 flex justify-center items-center gap-2 active:scale-[0.98]"
+                    >
+                        {loading ? <Loader2 className="animate-spin h-5 w-5"/> : (
+                            <>Entrar no Painel <LogIn size={18}/></>
                         )}
                     </button>
+
+                    <p className="text-center text-xs font-medium text-gray-400">
+                        Novo por aqui?{' '}
+                        <Link href="/auth/register"
+                              className="text-purple-600 font-bold hover:underline underline-offset-4 transition-all">
+                            Solicite seu acesso
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>
