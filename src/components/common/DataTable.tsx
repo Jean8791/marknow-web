@@ -1,12 +1,14 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { Edit, Eye, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import {ReactNode} from 'react';
+import {ChevronLeft, ChevronRight, Edit, Eye, Trash2} from 'lucide-react';
 
 export interface Column<T> {
     header: string;
     key: keyof T | string;
     render?: (item: T) => ReactNode;
+    headerClassName?: string;
+    align?: 'left' | 'center' | 'right';
 }
 
 interface DataTableProps<T> {
@@ -57,7 +59,12 @@ export default function DataTable<T>({
                         <thead className="bg-gray-50/50 border-b border-gray-100">
                         <tr>
                             {columns.map((col, index) => (
-                                <th key={index} className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                <th
+                                    key={index}
+                                    className={`px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider 
+                                    ${col.headerClassName || ''} 
+                                    ${col.align === 'center' ? 'text-center' : 'text-left'}`}
+                                >
                                     {col.header}
                                 </th>
                             ))}
@@ -73,7 +80,10 @@ export default function DataTable<T>({
                             data.map((item, rowIndex) => (
                                 <tr key={rowIndex} className="hover:bg-gray-50/50 transition-colors group">
                                     {columns.map((col, colIndex) => (
-                                        <td key={colIndex} className="px-6 py-4 text-sm text-gray-600">
+                                        <td
+                                            key={colIndex}
+                                            className={`px-6 py-4 text-sm text-gray-600 ${col.align === 'center' ? 'text-center' : 'text-left'}`}
+                                        >
                                             {col.render ? col.render(item) : (item[col.key as keyof T] as ReactNode)}
                                         </td>
                                     ))}
@@ -82,17 +92,23 @@ export default function DataTable<T>({
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center gap-2">
                                                 {onView && (
-                                                    <button onClick={() => onView(item)} className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all">
+                                                    <button onClick={() => onView(item)}
+                                                            className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all"
+                                                            title="Visualizar">
                                                         <Eye size={18}/>
                                                     </button>
                                                 )}
                                                 {onEdit && (
-                                                    <button onClick={() => onEdit(item)} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">
+                                                    <button onClick={() => onEdit(item)}
+                                                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                                                            title="Editar">
                                                         <Edit size={18}/>
                                                     </button>
                                                 )}
                                                 {onDelete && (
-                                                    <button onClick={() => onDelete(item)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+                                                    <button onClick={() => onDelete(item)}
+                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                                                            title="Excluir">
                                                         <Trash2 size={18}/>
                                                     </button>
                                                 )}
@@ -103,7 +119,8 @@ export default function DataTable<T>({
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={columns.length + 1} className="px-6 py-12 text-center text-gray-400 italic">
+                                <td colSpan={columns.length + 1}
+                                    className="px-6 py-12 text-center text-gray-400 italic">
                                     Nenhum registro encontrado.
                                 </td>
                             </tr>
@@ -113,10 +130,9 @@ export default function DataTable<T>({
                 </div>
 
                 {/* --- RODAPÉ COM TOTALIZADORES --- */}
-                <div className="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-
+                <div
+                    className="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-6">
-                        {/* Indicador de Total Geral */}
                         <div className="text-sm text-gray-500 font-medium">
                             Total de <span className="text-gray-800 font-bold">{totalElements}</span> registros
                         </div>
@@ -137,7 +153,8 @@ export default function DataTable<T>({
 
                     <div className="flex items-center gap-6">
                         <span className="text-sm text-gray-500 font-medium">
-                            Página <span className="text-gray-800 font-bold">{currentPage}</span> de <span className="text-gray-800 font-bold">{totalPages}</span>
+                            Página <span className="text-gray-800 font-bold">{currentPage}</span> de <span
+                            className="text-gray-800 font-bold">{totalPages}</span>
                         </span>
 
                         <div className="flex gap-2">
@@ -146,14 +163,14 @@ export default function DataTable<T>({
                                 disabled={currentPage === 1}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >
-                                <ChevronLeft size={18} className="text-gray-600" />
+                                <ChevronLeft size={18} className="text-gray-600"/>
                             </button>
                             <button
                                 onClick={() => onPageChange(currentPage + 1)}
                                 disabled={currentPage === totalPages}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >
-                                <ChevronRight size={18} className="text-gray-600" />
+                                <ChevronRight size={18} className="text-gray-600"/>
                             </button>
                         </div>
                     </div>
