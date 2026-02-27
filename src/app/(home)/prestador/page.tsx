@@ -57,11 +57,11 @@ export default function PrestadoresList() {
             )
         },
         {
-            header: 'Plano',
+            header: 'Page',
             key: 'nomePlano',
             render: (item) => (
                 <div>
-                    <p className="text-sm text-gray-600 font-medium">{item.nomePlano || 'Sem Plano'}</p>
+                    <p className="text-sm text-gray-600 font-medium">{item.nomePlano || 'Sem Page'}</p>
                     <p className="text-[10px] text-purple-500 font-bold uppercase tracking-wider">{item.statusAssinatura}</p>
                 </div>
             )

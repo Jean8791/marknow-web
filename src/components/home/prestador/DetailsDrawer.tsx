@@ -63,7 +63,7 @@ export default function DetailsDrawer({isOpen, onClose, item}: Props) {
                             </div>
                         </section>
 
-                        {/* Seção Plano */}
+                        {/* Seção Page */}
                         <section className="bg-orange-50 p-5 rounded-2xl border border-orange-100">
                             <div className="flex items-center gap-2 mb-4 text-orange-700 font-bold">
                                 <CreditCard size={18}/> <span>Detalhes do Plano</span>

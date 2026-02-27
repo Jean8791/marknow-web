@@ -11,7 +11,7 @@ export interface PrestadorDetalhado {
     fimPeriodoAtual: string; // ISO Date string
     provedor: string; // ISO Date string
 
-    // Dados do Plano
+    // Dados do Page
     nomePlano: string;
     limiteAgendamentos: number;
     valorPlano: number;
