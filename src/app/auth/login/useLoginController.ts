@@ -1,65 +1,49 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
-import {api} from "@/services/api";
-import {AxiosError} from "axios";
 import Cookies from 'js-cookie';
-
-import {LoginRequestDTO, LoginResponseDTO} from '@/types/auth';
+import {LoginService} from "@/app/auth/login/login.service";
 
 export const useLoginController = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const [email, setEmail] = useState('admin@barbeariamark.com.br');
-    const [senha, setSenha] = useState('SenhaForte#2026');
+    const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
 
-    async function handleSubmit(e: React.SyntheticEvent) {
-        e.preventDefault();
+        if (loading) return;
 
         setLoading(true);
-        setError('');
+        setError(null);
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email') as string;
+        const senha = formData.get('senha') as string;
 
         try {
-            const response = await api.post<LoginResponseDTO>('/auth/login', {email, senha} as LoginRequestDTO);
-            Cookies.remove('marknow_role', {path: '/'});
-            Cookies.remove('marknow_user_oid', {path: '/'});
-            Cookies.remove('marknow_prestador_oid', {path: '/'});
-            Cookies.remove('marknow_token', {path: '/'});
+            const data = await LoginService.login(email, senha);
 
-            const {token, usuario} = response.data;
+            // 1. Salva LocalStorage
+            localStorage.setItem('@MarkNow:token', data.token);
+            localStorage.setItem('@MarkNow:user-role', data.usuario.perfil);
 
-            localStorage.setItem('@MarkNow:token', token);
-            localStorage.setItem('@MarkNow:user-name', usuario.nome);
-            localStorage.setItem('@MarkNow:user-role', usuario.perfil);
-            localStorage.setItem('@MarkNow:user-prestador_oid', usuario.oidPrestador);
-
-            Cookies.set('marknow_role', usuario.perfil, {expires: 1, path: '/', sameSite: 'lax'});
-            Cookies.set('marknow_user_oid', usuario.oid, {expires: 1, path: '/', sameSite: 'lax'});
-            Cookies.set('marknow_prestador_oid', usuario.oidPrestador, {expires: 1, path: '/', sameSite: 'lax'});
-            Cookies.set('marknow_token', token, {expires: 1, path: '/', sameSite: 'lax'});
+            // 2. Define Cookies (Importante para o Middleware)
+            const cookieOptions = {expires: 1, path: '/', sameSite: 'lax' as const};
+            Cookies.set('marknow_token', data.token, cookieOptions);
+            Cookies.set('marknow_role', data.usuario.perfil, cookieOptions);
+            Cookies.set('marknow_user_oid', data.usuario.oid, cookieOptions);
+            Cookies.set('marknow_prestador_oid', data.usuario.oidPrestador, cookieOptions);
 
             router.push('/dashboard');
-        } catch (err) {
-
-            const axiosError = err as AxiosError<{ message: string }>;
-
-            const errorMessage = axiosError.response?.data?.message || 'Erro ao conectar com o servidor.';
-
-            setError(errorMessage);
-            console.error('Falha no login:', axiosError);
+            router.refresh();
+        } catch (err: any) {
+            console.log("ERRO REAL DA API:", err.response?.data);
+            const msg = err.response?.data?.message || "Credenciais inválidas";
+            setError(msg);
+            setLoading(false);
         } finally {
             setLoading(false);
         }
-    }
+    }, [loading, router]);
 
-    return {
-        email,
-        setEmail,
-        senha,
-        setSenha,
-        loading,
-        error,
-        handleSubmit
-    };
-}
+    return {loading, error, handleSubmit};
+};
