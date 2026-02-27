@@ -3,6 +3,7 @@
 import {ArrowLeft, Building2, ImageIcon, Loader2, MapPin, Save} from "lucide-react";
 import Link from "next/link";
 import {usePrestadorEditController} from "@/app/(home)/prestador/[oid]/usePrestadorEditController";
+import {formatDocumento} from "@/utils/formatDocumento";
 
 export default function PrestadorForm() {
     const {
@@ -99,7 +100,7 @@ export default function PrestadorForm() {
                             {/* CPF ou CNPJ */}
                             <div className="md:col-span-2 space-y-1">
                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">CPF ou CNPJ</label>
-                                <input type="text" name="documento" defaultValue={prestador?.documento || ''} className="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium"/>
+                                <input type="text" name="documento" defaultValue={formatDocumento(prestador?.documento) || ''} className="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium"/>
                             </div>
                             {/* Tipo Pessoa */}
                             <div className="space-y-1">

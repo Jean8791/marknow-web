@@ -9,6 +9,7 @@ export const useLoginController = () => {
     const router = useRouter();
 
     const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
         if (loading) return;
 
@@ -22,11 +23,9 @@ export const useLoginController = () => {
         try {
             const data = await LoginService.login(email, senha);
 
-            // 1. Salva LocalStorage
             localStorage.setItem('@MarkNow:token', data.token);
             localStorage.setItem('@MarkNow:user-role', data.usuario.perfil);
 
-            // 2. Define Cookies (Importante para o Middleware)
             const cookieOptions = {expires: 1, path: '/', sameSite: 'lax' as const};
             Cookies.set('marknow_token', data.token, cookieOptions);
             Cookies.set('marknow_role', data.usuario.perfil, cookieOptions);
@@ -34,12 +33,9 @@ export const useLoginController = () => {
             Cookies.set('marknow_prestador_oid', data.usuario.oidPrestador, cookieOptions);
 
             router.push('/dashboard');
-            router.refresh();
         } catch (err: any) {
-            console.log("ERRO REAL DA API:", err.response?.data);
             const msg = err.response?.data?.message || "Credenciais inválidas";
             setError(msg);
-            setLoading(false);
         } finally {
             setLoading(false);
         }

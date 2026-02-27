@@ -15,7 +15,6 @@ export default function RootLayout({children,}: {
     return (
         <html lang="pt-pt">
         <body className={inter.className}>
-        {/* Este children é onde as tuas páginas (login, home, etc) vão aparecer */}
         {children}
         </body>
         </html>

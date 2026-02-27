@@ -1,7 +1,7 @@
 // src/app/auth/login/page.tsx
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Eye, EyeOff, Loader2, Lock, LogIn, Mail} from 'lucide-react';
 import Link from 'next/link';
 import {useLoginController} from "./useLoginController";
@@ -9,10 +9,6 @@ import {useLoginController} from "./useLoginController";
 export default function LoginPage() {
     const {loading, error, handleSubmit} = useLoginController();
     const [showPassword, setShowPassword] = useState(false);
-    console.log("A TELA RECARREGOU!");
-    useEffect(() => {
-        console.log("LoginPage montada/atualizada. Erro atual:", error);
-    }, [error]);
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans leading-relaxed">
@@ -52,7 +48,8 @@ export default function LoginPage() {
                             <div className="flex justify-between items-center px-1">
                                 <label
                                     className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Senha</label>
-                                <Link href="/auth/forgot-password" className="text-[10px] font-bold text-purple-600 hover:text-purple-800 uppercase tracking-widest">Esqueceu?</Link>
+                                <Link href="/auth/forgot-password"
+                                      className="text-[10px] font-bold text-purple-600 hover:text-purple-800 uppercase tracking-widest">Esqueceu?</Link>
                             </div>
                             <div className="relative group">
                                 <Lock
@@ -77,15 +74,16 @@ export default function LoginPage() {
                     </div>
 
                     {/* Espaço fixo para Erro para evitar saltos na UI */}
-                    <div className="min-h-[50px] flex items-center">
-                        {error && (
+
+                    {error && (
+                        <div className="min-h-[50px] flex items-center">
                             <div
                                 className="w-full bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl border border-red-100 flex items-center gap-2">
                                 <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse shrink-0"/>
                                 <span>{error}</span>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     <button
                         type="submit"

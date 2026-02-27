@@ -14,6 +14,11 @@ pnpm dev
 bun dev
 ```
 
+pkill -f "next-server" || true
+pkill -f "next dev" || true
+pkill -f "node.*next" || true
+lsof -ti:3000 | xargs -r kill -9
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
