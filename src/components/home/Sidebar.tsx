@@ -12,9 +12,9 @@ const MENU_ITEMS = [
     {name: 'Usuários', icon: Users, path: '/usuario', roles: ['SUPER_ADMIN', 'ADMIN']},
     {name: 'Usuário', icon: Users, path: '/usuario/oid', roles: ['OPERACIONAL']},
     {name: 'Planos', icon: CreditCard, path: '/plano', roles: ['SUPER_ADMIN']},
-    {name: 'Assinaturas', icon: ClipboardList, path: '/assinaturas', roles: ['SUPER_ADMIN']},
+    {name: 'Assinaturas', icon: ClipboardList, path: '/assinatura', roles: ['SUPER_ADMIN']},
     {name: 'Convite', icon: Mail, path: '/convite', roles: ['SUPER_ADMIN']},
-    {name: 'Agendamentos', icon: Calendar, path: '/agendamentos', roles: ['ADMIN', 'OPERACIONAL']},
+    {name: 'Agendamentos', icon: Calendar, path: '/agendamento', roles: ['ADMIN', 'OPERACIONAL']},
 ];
 
 export default function Sidebar() {
