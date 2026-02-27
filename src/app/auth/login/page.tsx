@@ -97,7 +97,7 @@ export default function LoginPage() {
 
                     <p className="text-center text-xs font-medium text-gray-400">
                         Novo por aqui?{' '}
-                        <Link href="/auth/register"
+                        <Link href="/auth/register/new"
                               className="text-purple-600 font-bold hover:underline underline-offset-4 transition-all">
                             Solicite seu acesso
                         </Link>

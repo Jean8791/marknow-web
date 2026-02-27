@@ -18,7 +18,7 @@ interface DataTableProps<T> {
     onDelete?: (item: T) => void;
     onView?: (item: T) => void;
     isLoading?: boolean;
-    currentPage: number;
+    currentPage: number; // Índice vindo do Back (0, 1, 2...)
     totalPages: number;
     totalElements: number;
     pageSize: number;
@@ -76,7 +76,7 @@ export default function DataTable<T>({
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
-                        {data.length > 0 ? (
+                        {data && data.length > 0 ? (
                             data.map((item, rowIndex) => (
                                 <tr key={rowIndex} className="hover:bg-gray-50/50 transition-colors group">
                                     {columns.map((col, colIndex) => (
@@ -129,7 +129,7 @@ export default function DataTable<T>({
                     </table>
                 </div>
 
-                {/* --- RODAPÉ COM TOTALIZADORES --- */}
+                {/* --- RODAPÉ COM PAGINAÇÃO AJUSTADA --- */}
                 <div
                     className="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-6">
@@ -142,7 +142,7 @@ export default function DataTable<T>({
                             <select
                                 value={pageSize}
                                 onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                                className="bg-white border border-gray-200 text-gray-600 text-xs rounded-lg focus:ring-purple-500 outline-none p-1 font-bold"
+                                className="bg-white border border-gray-200 text-gray-600 text-xs rounded-lg focus:ring-purple-500 outline-none p-1 font-bold cursor-pointer"
                             >
                                 <option value={10}>10</option>
                                 <option value={20}>20</option>
@@ -153,21 +153,25 @@ export default function DataTable<T>({
 
                     <div className="flex items-center gap-6">
                         <span className="text-sm text-gray-500 font-medium">
-                            Página <span className="text-gray-800 font-bold">{currentPage}</span> de <span
+                            {/* Exibimos +1 para o utilizador, mas mantemos o índice original para o sistema */}
+                            Página <span
+                            className="text-gray-800 font-bold">{totalElements > 0 ? currentPage + 1 : 0}</span> de <span
                             className="text-gray-800 font-bold">{totalPages}</span>
                         </span>
 
                         <div className="flex gap-2">
                             <button
                                 onClick={() => onPageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
+                                // Desabilita se estiver na página 0 (primeira página)
+                                disabled={currentPage === 0 || isLoading}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >
                                 <ChevronLeft size={18} className="text-gray-600"/>
                             </button>
                             <button
                                 onClick={() => onPageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
+                                // Desabilita se a próxima página (currentPage + 1) for igual ou maior que o total
+                                disabled={currentPage + 1 >= totalPages || isLoading}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >
                                 <ChevronRight size={18} className="text-gray-600"/>
