@@ -110,14 +110,6 @@ export default function PrestadoresList() {
                     <h1 className="text-2xl font-black text-gray-800 tracking-tight">Prestadores</h1>
                     <p className="text-sm text-gray-500 font-medium">Gestão de unidades e parceiros MarkNow.</p>
                 </div>
-
-                {isSuperAdmin && (
-                    <Link href="/prestador/cadastro"
-                          className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-xl shadow-purple-100 active:scale-95">
-                        <Plus size={20}/>
-                        Novo Prestador
-                    </Link>
-                )}
             </div>
 
             <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">

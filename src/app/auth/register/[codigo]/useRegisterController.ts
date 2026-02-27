@@ -2,7 +2,7 @@ import {useCallback, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {notify} from "@/utils/toast-service";
 import {CadastroCreateRequest} from "@/types/auth/register";
-import {RegisterService} from "@/app/auth/register/register.service";
+import {RegisterService} from "@/app/auth/register/[codigo]/register.service";
 
 export const useRegisterController = () => {
     const [step, setStep] = useState(1);
@@ -11,7 +11,8 @@ export const useRegisterController = () => {
     const params = useParams();
     const router = useRouter();
 
-    const urlInviteCode = params?.slug as string;
+    const rawCodigo = params?.codigo as string;
+    const urlInviteCode = rawCodigo === "new" ? "" : rawCodigo;
 
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
