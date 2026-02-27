@@ -1,12 +1,12 @@
 'use client';
 
-import {Eye, Plus, Search} from 'lucide-react'; // Adicionei o Eye para o botão de detalhes
+import {Eye, Plus, Search} from 'lucide-react';
 import Link from 'next/link';
 import DataTable, {Column} from '@/components/common/DataTable';
 import {usePrestadorListController} from './usePrestadorListController';
 import ConfirmModal from "@/components/common/ConfirmModal";
-import DetailsDrawer from "@/components/home/prestador/DetailsDrawer"; // Certifique-se de que o path está correto
-import {Prestador} from "@/types/prestador";
+import DetailsDrawer from "@/components/home/prestador/DetailsDrawer";
+import {PrestadorDetalhado} from "@/types/prestador/prestadorDetalhado";
 import {formatDocumento} from "@/utils/formatDocumento";
 
 export default function PrestadoresList() {
@@ -31,7 +31,7 @@ export default function PrestadoresList() {
         handleSearch
     } = usePrestadorListController();
 
-    const columns: Column<Prestador>[] = [
+    const columns: Column<PrestadorDetalhado>[] = [
         {
             header: 'Prestador',
             key: 'nome',
@@ -45,8 +45,7 @@ export default function PrestadoresList() {
                         <p className="font-bold text-gray-700 leading-tight">{item.nome}</p>
                         <div className="flex items-center gap-2 mt-0.5">
                     <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter ${
-                        item.tipoPessoa === 'PF' ? 'bg-blue-50 text-blue-500' : 'bg-orange-50 text-orange-600'
-                    }`}>
+                        item.tipoPessoa === 'PF' ? 'bg-blue-50 text-blue-500' : 'bg-orange-50 text-orange-600'}`}>
                         {item.tipoPessoa}
                     </span>
                             <p className="text-[11px] text-gray-400 font-medium">
@@ -83,8 +82,7 @@ export default function PrestadoresList() {
             key: 'status',
             render: (item) => (
                 <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                    'ATIVO' === item.status ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'
-                }`}>
+                    'ATIVO' === item.status ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
                     {item.status}
                 </span>
             )
@@ -98,8 +96,7 @@ export default function PrestadoresList() {
                 <button
                     onClick={() => openDetails(item)}
                     className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                    title="Visualizar Detalhes"
-                >
+                    title="Visualizar Detalhes">
                     <Eye size={18}/>
                 </button>
             )
@@ -115,7 +112,7 @@ export default function PrestadoresList() {
                 </div>
 
                 {isSuperAdmin && (
-                    <Link href="/prestador/novo"
+                    <Link href="/prestador/cadastro"
                           className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-xl shadow-purple-100 active:scale-95">
                         <Plus size={20}/>
                         Novo Prestador
@@ -130,8 +127,7 @@ export default function PrestadoresList() {
                         type="text"
                         placeholder="Pesquisar por nome, documento ou e-mail..."
                         onChange={(e) => handleSearch(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium transition-all"
-                    />
+                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm font-medium transition-all"/>
                 </div>
             </div>
 
