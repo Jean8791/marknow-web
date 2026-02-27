@@ -19,10 +19,21 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        if (!axios.isAxiosError(error)) return Promise.reject(error);
+
+        const status = error.response?.status;
+        const url = error.config?.url ?? "";
+        const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+
+        const isAuthRoute = url.includes("/auth/login") || url.includes("/auth/register") || url.includes("/auth/forgot-password");
+        const alreadyOnLogin = currentPath.startsWith("/auth/login");
+
+        if (status === 401 && !isAuthRoute && !alreadyOnLogin) {
             localStorage.clear();
-            window.location.href = '/auth/login';
+            window.location.assign("/auth/login");
+            return;
         }
+
         return Promise.reject(error);
     }
 );

@@ -8,7 +8,9 @@ export function proxy(request: NextRequest) {
 
     const {pathname} = request.nextUrl;
 
-    console.log("Proxy Request:", {pathname, token, role, prestadorOid, userOid});
+    if (process.env.NODE_ENV !== 'production') {
+        console.log("Proxy Request:", {pathname, token, role, prestadorOid, userOid});
+    }
 
     if (
         pathname.startsWith('/_next') ||
