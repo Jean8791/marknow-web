@@ -4,6 +4,7 @@ import {useParams, useRouter} from "next/navigation";
 import {useCallback, useEffect, useState} from "react";
 import {PrestadorUpdate} from "@/types/prestador/prestadorUpdate";
 import {PrestadorService} from "@/app/(home)/prestador/[oid]/prestador.service";
+import {notify} from "@/utils/toast-service";
 
 export function usePrestadorEditController() {
     const router = useRouter();
@@ -77,7 +78,7 @@ export function usePrestadorEditController() {
 
         try {
             await PrestadorService.update(oid as string, payload as PrestadorUpdate)
-            alert("Prestador atualizado com sucesso!");
+            notify.success("Prestador atualizado com sucesso!");
             router.push('/prestador');
         } catch (error: any) {
             if (error.response?.status === 400) {

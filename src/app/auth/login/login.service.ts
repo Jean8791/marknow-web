@@ -1,5 +1,5 @@
 import {api} from "@/services/api";
-import {LoginRequestDTO, LoginResponseDTO} from "@/types/auth";
+import {LoginRequestDTO, LoginResponseDTO} from "@/types/auth/auth";
 
 export const LoginService = {
 
