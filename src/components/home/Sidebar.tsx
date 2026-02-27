@@ -35,7 +35,7 @@ export default function Sidebar() {
     useEffect(() => {
         const role = localStorage.getItem('@MarkNow:user-role');
         const userOid = localStorage.getItem('@MarkNow:user-oid');
-        const prestadorOid = localStorage.getItem('@MarkNow:user-oidPrestador');
+        const prestadorOid = localStorage.getItem('@MarkNow:user-prestador_oid');
 
         const handle = requestAnimationFrame(() => {
             setAuth({

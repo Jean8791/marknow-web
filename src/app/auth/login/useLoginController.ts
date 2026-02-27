@@ -32,6 +32,7 @@ export const useLoginController = () => {
             localStorage.setItem('@MarkNow:token', token);
             localStorage.setItem('@MarkNow:user-name', usuario.nome);
             localStorage.setItem('@MarkNow:user-role', usuario.perfil);
+            localStorage.setItem('@MarkNow:user-prestador_oid', usuario.oidPrestador);
 
             Cookies.set('marknow_role', usuario.perfil, {expires: 1, path: '/', sameSite: 'lax'});
             Cookies.set('marknow_user_oid', usuario.oid, {expires: 1, path: '/', sameSite: 'lax'});
