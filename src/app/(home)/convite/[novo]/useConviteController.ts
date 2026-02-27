@@ -2,6 +2,7 @@ import {useCallback, useState} from "react";
 import {notify} from "@/utils/toast-service";
 import {ConviteResponse} from "@/types/convite/conviteResponse";
 import {ConviteService} from "@/app/(home)/convite/convites.service";
+import {ConviteCreateRequest} from "@/types/convite/conviteCreateRequest";
 
 export const useConviteController = () => {
     const [loading, setLoading] = useState(false);
@@ -13,10 +14,11 @@ export const useConviteController = () => {
         const amanha = new Date();
         amanha.setDate(amanha.getDate() + 1);
 
-        const payload = {
+        const payload: ConviteCreateRequest = {
             descricao: formData.get('descricao') as string,
             emailDestinatario: (formData.get('email') as string) || undefined,
             expiraEm: amanha.toISOString(),
+            enviarEmail: formData.get('enviarEmail') === 'true',
             maxUsos: Number(formData.get('maxUsos')) || 1
         };
 
