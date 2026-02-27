@@ -3,13 +3,13 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {api} from "@/services/api";
-import {Prestador} from "@/types/prestador";
+import {PrestadorDetalhado} from "@/types/prestador/prestadorDetalhado";
 
 export function usePrestadorListController() {
     const router = useRouter();
 
     // --- ESTADOS DE DADOS ---
-    const [prestadores, setPrestadores] = useState<Prestador[]>([]);
+    const [prestadores, setPrestadores] = useState<PrestadorDetalhado[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ export function usePrestadorListController() {
     const [search, setSearch] = useState('');
 
     // --- CONTROLE DO MODAL DE EXCLUSÃO ---
-    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; item: Prestador | null; }>({
+    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; item: PrestadorDetalhado | null; }>({
         isOpen: false,
         item: null
     });
@@ -29,13 +29,13 @@ export function usePrestadorListController() {
     // Adicione isso dentro do seu hook controller
     const [drawerConfig, setDrawerConfig] = useState<{
         isOpen: boolean;
-        item: Prestador | null;
+        item: PrestadorDetalhado | null;
     }>({
         isOpen: false,
         item: null
     });
 
-    const openDetails = (item: Prestador) => {
+    const openDetails = (item: PrestadorDetalhado) => {
         setDrawerConfig({isOpen: true, item});
     };
 
@@ -69,19 +69,6 @@ export function usePrestadorListController() {
     }, [currentPage, pageSize, search]);
 
     /**
-     * 2. Efeito para carregar o perfil e proteger a rota.
-     * Roda apenas uma vez quando o componente monta.
-     */
-    useEffect(() => {
-        const role = localStorage.getItem('@MarkNow:user-role');
-        setUserRole(role);
-
-        if (role && role !== 'SUPER_ADMIN') {
-            router.push('/dashboard');
-        }
-    }, [router]);
-
-    /**
      * 3. Efeito de busca com DEBOUNCE.
      * Evita que cada tecla digitada dispare uma requisição ao banco.
      */
@@ -95,11 +82,11 @@ export function usePrestadorListController() {
 
     // --- HANDLERS DE AÇÃO ---
 
-    const handleEdit = (item: Prestador) => {
+    const handleEdit = (item: PrestadorDetalhado) => {
         router.push(`/prestador/${item.oid}`);
     };
 
-    const openDeleteModal = (item: Prestador) => {
+    const openDeleteModal = (item: PrestadorDetalhado) => {
         setModalConfig({isOpen: true, item});
     };
 
@@ -151,8 +138,6 @@ export function usePrestadorListController() {
         isLoading,
         modalConfig,
         isSuperAdmin: userRole === 'SUPER_ADMIN',
-
-        // Funções de Gerenciamento
         setModalConfig,
         openDeleteModal,
         handleEdit,

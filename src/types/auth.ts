@@ -5,6 +5,7 @@ interface UsuarioDTO {
     nome: string;
     email: string;
     perfil: LoginResponseRole;
+    oidPrestador: string;
 }
 
 export interface LoginResponseDTO {

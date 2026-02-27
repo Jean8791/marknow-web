@@ -1,5 +1,4 @@
-// No seu usePrestadorListController.ts ou arquivo de tipos
-export interface Prestador {
+export interface PrestadorDetalhado {
     oid: string;
     nome: string;
     documento: string;

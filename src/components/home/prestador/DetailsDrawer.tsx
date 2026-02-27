@@ -1,5 +1,5 @@
 // components/prestador/DetailsDrawer.tsx
-import { Prestador } from "@/types/prestador";
+import { Prestador } from "@/types/prestador/prestadorDetalhado";
 import { X, User, CreditCard, Calendar, ShieldCheck } from "lucide-react";
 
 interface Props {
