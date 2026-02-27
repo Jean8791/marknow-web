@@ -53,15 +53,19 @@ export default function DataTable<T>({
 
     return (
         <div className="space-y-4">
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead className="bg-gray-50/50 border-b border-gray-100">
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+
+                {/* CONTAINER COM SCROLL INTERNO */}
+                {/* A altura h-[500px] pode ser alterada conforme sua necessidade */}
+                <div className="overflow-x-auto overflow-y-auto max-h-[500px] scrollbar-thin scrollbar-thumb-gray-200">
+                    <table className="w-full text-left border-separate border-spacing-0">
+                        <thead className="sticky top-0 z-10">
                         <tr>
                             {columns.map((col, index) => (
                                 <th
                                     key={index}
                                     className={`px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider 
+                                    bg-gray-50/90 backdrop-blur-sm border-b border-gray-100
                                     ${col.headerClassName || ''} 
                                     ${col.align === 'center' ? 'text-center' : 'text-left'}`}
                                 >
@@ -69,7 +73,7 @@ export default function DataTable<T>({
                                 </th>
                             ))}
                             {(onEdit || onDelete || onView) && (
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center bg-gray-50/90 backdrop-blur-sm border-b border-gray-100">
                                     Ações
                                 </th>
                             )}
@@ -129,7 +133,7 @@ export default function DataTable<T>({
                     </table>
                 </div>
 
-                {/* --- RODAPÉ COM PAGINAÇÃO AJUSTADA --- */}
+                {/* --- RODAPÉ FIXO (Sempre visível abaixo do scroll) --- */}
                 <div
                     className="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-6">
@@ -153,7 +157,6 @@ export default function DataTable<T>({
 
                     <div className="flex items-center gap-6">
                         <span className="text-sm text-gray-500 font-medium">
-                            {/* Exibimos +1 para o utilizador, mas mantemos o índice original para o sistema */}
                             Página <span
                             className="text-gray-800 font-bold">{totalElements > 0 ? currentPage + 1 : 0}</span> de <span
                             className="text-gray-800 font-bold">{totalPages}</span>
@@ -162,7 +165,6 @@ export default function DataTable<T>({
                         <div className="flex gap-2">
                             <button
                                 onClick={() => onPageChange(currentPage - 1)}
-                                // Desabilita se estiver na página 0 (primeira página)
                                 disabled={currentPage === 0 || isLoading}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >
@@ -170,7 +172,6 @@ export default function DataTable<T>({
                             </button>
                             <button
                                 onClick={() => onPageChange(currentPage + 1)}
-                                // Desabilita se a próxima página (currentPage + 1) for igual ou maior que o total
                                 disabled={currentPage + 1 >= totalPages || isLoading}
                                 className="p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                             >

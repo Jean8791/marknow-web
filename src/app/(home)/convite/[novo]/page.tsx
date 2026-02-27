@@ -1,11 +1,13 @@
 'use client';
 
-import { AlignLeft, Copy, Hash, Loader2, Mail, Ticket, ArrowLeft } from 'lucide-react';
+import { useState } from 'react'; // Adicionado para controlar a visibilidade do flag
+import { AlignLeft, Copy, Hash, Loader2, Mail, Ticket, ArrowLeft, Send } from 'lucide-react';
 import { useConviteController } from "./useConviteController";
 import Link from 'next/link';
 
 export default function ConvitePage() {
     const { loading, invite, gerarConvite, copiarLink } = useConviteController();
+    const [emailValue, setEmailValue] = useState('');
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,7 +17,6 @@ export default function ConvitePage() {
 
     return (
         <div className="p-6 max-w-6xl mx-auto space-y-8">
-            {/* Top Bar com Botão Voltar */}
             <div className="flex items-center justify-between">
                 <Link
                     href="/convite"
@@ -36,78 +37,73 @@ export default function ConvitePage() {
             </header>
 
             <div className="grid lg:grid-cols-12 gap-8 items-start">
-
-                {/* Form de Criação (Ocupa 7 colunas) */}
                 <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-[40px] border border-gray-100 shadow-sm">
                     <form onSubmit={onSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                                Descrição do Convite
-                            </label>
+                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Descrição do Convite</label>
                             <div className="relative">
                                 <AlignLeft className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-300" />
-                                <input
-                                    name="descricao"
-                                    required
-                                    placeholder="Ex: Convite para Unidade Joinville"
-                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none text-sm font-semibold transition-all"
-                                />
+                                <input name="descricao" required placeholder="Ex: Convite para Unidade Joinville" className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none text-sm font-semibold transition-all" />
                             </div>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                                    E-mail (Opcional)
-                                </label>
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">E-mail (Opcional)</label>
                                 <div className="relative">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-300" />
                                     <input
                                         name="email"
                                         type="email"
+                                        value={emailValue}
+                                        onChange={(e) => setEmailValue(e.target.value)}
                                         placeholder="parceiro@email.com"
                                         className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none text-sm font-semibold transition-all"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-                                    Máximo de Usos
-                                </label>
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Máximo de Usos</label>
                                 <div className="relative">
                                     <Hash className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-300" />
-                                    <input
-                                        name="maxUsos"
-                                        type="number"
-                                        required
-                                        defaultValue={1}
-                                        min={1}
-                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none text-sm font-semibold transition-all"
-                                    />
+                                    <input name="maxUsos" type="number" required defaultValue={1} min={1} className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none text-sm font-semibold transition-all" />
                                 </div>
                             </div>
                         </div>
 
+                        {/* --- NOVO: FLAG DE ENVIO DE E-MAIL --- */}
+                        {emailValue.includes('@') && (
+                            <div className="p-4 bg-purple-50 rounded-3xl border border-purple-100 flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-white p-2 rounded-xl text-purple-600 shadow-sm">
+                                        <Send size={18} />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-purple-900">Enviar convite por e-mail?</p>
+                                        <p className="text-[10px] text-purple-600 font-medium">O parceiro receberá o link automaticamente.</p>
+                                    </div>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input name="enviarEmail" type="checkbox" value="true" className="sr-only peer" defaultChecked />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
+                            </div>
+                        )}
+
                         <div className="pt-4">
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full py-4 bg-[#2D0066] text-white font-bold rounded-2xl hover:bg-purple-900 transition-all flex justify-center items-center gap-2 disabled:opacity-50 shadow-xl shadow-purple-100 active:scale-[0.98]"
-                            >
+                            <button type="submit" disabled={loading} className="w-full py-4 bg-[#2D0066] text-white font-bold rounded-2xl hover:bg-purple-900 transition-all flex justify-center items-center gap-2 disabled:opacity-50 shadow-xl shadow-purple-100 active:scale-[0.98]">
                                 {loading ? <Loader2 className="animate-spin" /> : <>Confirmar e Gerar Convite <Ticket size={18} /></>}
                             </button>
                         </div>
                     </form>
                 </div>
 
-                {/* Card do Código Gerado (Ocupa 5 colunas) */}
                 <div className="lg:col-span-5 h-full">
+                    {/* ... Restante do código do card de convite gerado ... */}
                     {invite ? (
                         <div className="bg-[#2D0066] p-10 rounded-[40px] text-white h-full flex flex-col justify-between relative overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-500">
-                            {/* Círculos decorativos de fundo */}
+                            {/* ... (mesmo conteúdo do card anterior) */}
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-                            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
-
                             <div className="relative">
                                 <div className="flex justify-between items-center mb-10">
                                     <div className="bg-white/10 p-3 rounded-2xl border border-white/10">
@@ -117,15 +113,11 @@ export default function ConvitePage() {
                                         Ativo para uso
                                     </span>
                                 </div>
-
                                 <div className="space-y-2 mb-8">
                                     <p className="text-[10px] uppercase font-bold opacity-50 tracking-widest">Código Gerado</p>
-                                    <h3 className="text-5xl font-mono font-bold tracking-[0.1em] text-white">
-                                        {invite.codigo}
-                                    </h3>
+                                    <h3 className="text-5xl font-mono font-bold tracking-[0.1em] text-white">{invite.codigo}</h3>
                                 </div>
                             </div>
-
                             <div className="relative space-y-6">
                                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-2">
                                     <div className="flex justify-between text-[11px] font-medium opacity-70">
@@ -137,11 +129,7 @@ export default function ConvitePage() {
                                         <span>{invite.maxUsos} {invite.maxUsos === 1 ? 'vaga' : 'vagas'}</span>
                                     </div>
                                 </div>
-
-                                <button
-                                    onClick={() => copiarLink(invite.codigo)}
-                                    className="w-full py-5 bg-white text-[#2D0066] font-extrabold rounded-2xl flex items-center justify-center gap-3 hover:bg-purple-50 transition-all active:scale-95 shadow-lg"
-                                >
+                                <button onClick={() => copiarLink(invite.codigo)} className="w-full py-5 bg-white text-[#2D0066] font-extrabold rounded-2xl flex items-center justify-center gap-3 hover:bg-purple-50 transition-all active:scale-95 shadow-lg">
                                     <Copy size={20} /> Copiar Link de Cadastro
                                 </button>
                             </div>
