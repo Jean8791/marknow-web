@@ -1,7 +1,7 @@
 'use client';
 
 import {ReactNode} from 'react';
-import {ChevronLeft, ChevronRight, Edit, Eye, Trash2} from 'lucide-react';
+import {Ban, ChevronLeft, ChevronRight, Edit, Eye, Trash2} from 'lucide-react';
 
 export interface Column<T> {
     header: string;
@@ -16,9 +16,10 @@ interface DataTableProps<T> {
     data: T[];
     onEdit?: (item: T) => void;
     onDelete?: (item: T) => void;
+    onCancel?: (item: T) => void;
     onView?: (item: T) => void;
     isLoading?: boolean;
-    currentPage: number; // Índice vindo do Back (0, 1, 2...)
+    currentPage: number;
     totalPages: number;
     totalElements: number;
     pageSize: number;
@@ -31,6 +32,7 @@ export default function DataTable<T>({
                                          data,
                                          onEdit,
                                          onDelete,
+                                         onCancel,
                                          onView,
                                          isLoading,
                                          currentPage,
@@ -72,7 +74,7 @@ export default function DataTable<T>({
                                     {col.header}
                                 </th>
                             ))}
-                            {(onEdit || onDelete || onView) && (
+                            {(onEdit || onCancel || onDelete || onView) && (
                                 <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center bg-gray-50/90 backdrop-blur-sm border-b border-gray-100">
                                     Ações
                                 </th>
@@ -92,7 +94,7 @@ export default function DataTable<T>({
                                         </td>
                                     ))}
 
-                                    {(onEdit || onDelete || onView) && (
+                                    {(onEdit || onCancel || onDelete || onView) && (
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center gap-2">
                                                 {onView && (
@@ -114,6 +116,13 @@ export default function DataTable<T>({
                                                             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                                                             title="Excluir">
                                                         <Trash2 size={18}/>
+                                                    </button>
+                                                )}
+                                                {onCancel && (
+                                                    <button onClick={() => onCancel(item)}
+                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                                                            title="Excluir">
+                                                        <Ban size={18}/>
                                                     </button>
                                                 )}
                                             </div>

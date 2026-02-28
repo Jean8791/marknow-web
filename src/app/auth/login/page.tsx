@@ -10,6 +10,9 @@ export default function LoginPage() {
     const {loading, error, handleSubmit} = useLoginController();
     const [showPassword, setShowPassword] = useState(false);
 
+    const [email, defaultValueEmail] = useState('admin@marknow.com.br');
+    const [senha, defaultValueSenha] = useState('admin123');
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 font-sans leading-relaxed">
             <div className="w-full max-w-[440px] bg-white p-8 md:p-12 rounded-[40px] shadow-sm border border-gray-100">
@@ -36,7 +39,7 @@ export default function LoginPage() {
                                     name="email"
                                     type="email"
                                     required
-                                    defaultValue="admin@barbeariamark.com.br"
+                                    defaultValue={email}
                                     placeholder="seu@email.com"
                                     className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-purple-100 focus:ring-4 focus:ring-purple-50 outline-none transition-all text-sm font-semibold"
                                 />
@@ -58,7 +61,7 @@ export default function LoginPage() {
                                     name="senha"
                                     type={showPassword ? "text" : "password"}
                                     required
-                                    defaultValue="SenhaForte#2026"
+                                    defaultValue={senha}
                                     placeholder="••••••••"
                                     className="w-full pl-12 pr-12 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-purple-100 focus:ring-4 focus:ring-purple-50 outline-none transition-all text-sm font-semibold"
                                 />

@@ -3,7 +3,7 @@
 import {useParams, useRouter} from "next/navigation";
 import {useCallback, useEffect, useState} from "react";
 import {PrestadorUpdate} from "@/types/prestador/prestadorUpdate";
-import {PrestadorService} from "@/app/(home)/prestador/[oid]/prestador.service";
+import {PrestadorService} from "@/app/(home)/prestador/prestador.service";
 import {notify} from "@/utils/toast-service";
 
 export function usePrestadorEditController() {

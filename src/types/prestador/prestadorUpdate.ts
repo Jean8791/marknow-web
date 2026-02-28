@@ -4,6 +4,12 @@ export interface PrestadorUpdate {
     documento: string;
     tipoPessoa: 'PF' | 'PJ';
     logoUrl?: string;
+    email?: string;
+    dddTelefone?: string;
+    telefone?: string;
+    dddCelular?: string;
+    celular?: string;
+    imagem?: string;
     cep?: string;
     logradouro?: string;
     numero?: string;

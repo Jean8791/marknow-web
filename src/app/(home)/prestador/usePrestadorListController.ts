@@ -4,29 +4,26 @@ import {useCallback, useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {api} from "@/services/api";
 import {PrestadorDetalhado} from "@/types/prestador/prestadorDetalhado";
+import {PrestadorService} from "@/app/(home)/prestador/prestador.service";
 
 export function usePrestadorListController() {
     const router = useRouter();
 
-    // --- ESTADOS DE DADOS ---
     const [prestadores, setPrestadores] = useState<PrestadorDetalhado[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [userRole, setUserRole] = useState<string | null>(null);
 
-    // --- ESTADOS DE FILTRO E PAGINAÇÃO ---
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalElements, setTotalElements] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
 
-    // --- CONTROLE DO MODAL DE EXCLUSÃO ---
     const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; item: PrestadorDetalhado | null; }>({
         isOpen: false,
         item: null
     });
 
-    // Adicione isso dentro do seu hook controller
     const [drawerConfig, setDrawerConfig] = useState<{
         isOpen: boolean;
         item: PrestadorDetalhado | null;
@@ -39,24 +36,16 @@ export function usePrestadorListController() {
         setDrawerConfig({isOpen: true, item});
     };
 
-    /**
-     * 1. Função de busca estabilizada com useCallback.
-     * Ela só é recriada se a página, o tamanho ou o termo de busca mudarem.
-     */
     const fetchPrestadores = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await api.get('/prestador', {
-                params: {
-                    page: currentPage - 1, // Quarkus é 0-based
-                    size: pageSize,
-                    sort: 'nome',
-                    search: search || undefined // Envia apenas se houver valor
-                }
-            });
 
-            // Estrutura vinda do seu PageDTO genérico no Quarkus
-            const {content, totalElements, totalPages} = response.data;
+            const {content, totalElements, totalPages} = await PrestadorService.getAll({
+                page: currentPage - 1,
+                size: pageSize,
+                sort: 'nome',
+                search: search || undefined
+            });
 
             setPrestadores(content);
             setTotalElements(totalElements);
@@ -68,39 +57,32 @@ export function usePrestadorListController() {
         }
     }, [currentPage, pageSize, search]);
 
-    /**
-     * 3. Efeito de busca com DEBOUNCE.
-     * Evita que cada tecla digitada dispare uma requisição ao banco.
-     */
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchPrestadores();
-        }, 400); // Aguarda 400ms após o usuário parar de digitar
+        }, 400);
 
         return () => clearTimeout(timer);
     }, [fetchPrestadores]);
-
-    // --- HANDLERS DE AÇÃO ---
 
     const handleEdit = (item: PrestadorDetalhado) => {
         router.push(`/prestador/${item.oid}`);
     };
 
-    const openDeleteModal = (item: PrestadorDetalhado) => {
+    const openCancelarModal = (item: PrestadorDetalhado) => {
         setModalConfig({isOpen: true, item});
     };
 
-    const handleDelete = async () => {
+    const handleCancelar = async () => {
         if (!modalConfig.item) return;
 
         try {
             setIsLoading(true);
-            // Chamada real ao @DELETE do seu Resource Java
+
             await api.delete(`/prestador/${modalConfig.item.oid}`);
 
             setModalConfig({isOpen: false, item: null});
 
-            // Se deletou o último item da página, volta uma página
             if (prestadores.length === 1 && currentPage > 1) {
                 setCurrentPage(prev => prev - 1);
             } else {
@@ -120,16 +102,15 @@ export function usePrestadorListController() {
 
     const handlePageSizeChange = (size: number) => {
         setPageSize(size);
-        setCurrentPage(1); // Sempre volta para a primeira página ao mudar o tamanho
+        setCurrentPage(1);
     };
 
     const handleSearch = (value: string) => {
         setSearch(value);
-        setCurrentPage(1); // Reseta a página ao buscar
+        setCurrentPage(1);
     };
 
     return {
-        // Dados e Estados
         prestadores,
         currentPage,
         pageSize,
@@ -139,9 +120,9 @@ export function usePrestadorListController() {
         modalConfig,
         isSuperAdmin: userRole === 'SUPER_ADMIN',
         setModalConfig,
-        openDeleteModal,
+        openCancelarModal,
         handleEdit,
-        handleDelete,
+        handleCancelar,
         handlePageChange,
         handlePageSizeChange,
         handleSearch,
