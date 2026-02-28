@@ -1,7 +1,6 @@
 'use client';
 
-import {Eye, Plus, Search} from 'lucide-react';
-import Link from 'next/link';
+import {Eye, Search} from 'lucide-react';
 import DataTable, {Column} from '@/components/common/DataTable';
 import {usePrestadorListController} from './usePrestadorListController';
 import ConfirmModal from "@/components/common/ConfirmModal";
@@ -19,13 +18,11 @@ export default function PrestadoresList() {
         isLoading,
         modalConfig,
         drawerConfig,
-        isSuperAdmin,
         setModalConfig,
         setDrawerConfig,
-        openDeleteModal,
+        openCancelarModal,
         openDetails,
-        handleEdit,
-        handleDelete,
+        handleCancelar,
         handlePageChange,
         handlePageSizeChange,
         handleSearch
@@ -57,11 +54,11 @@ export default function PrestadoresList() {
             )
         },
         {
-            header: 'Page',
+            header: 'Plano',
             key: 'nomePlano',
             render: (item) => (
                 <div>
-                    <p className="text-sm text-gray-600 font-medium">{item.nomePlano || 'Sem Page'}</p>
+                    <p className="text-sm text-gray-600 font-medium">{item.nomePlano || 'Sem Plano'}</p>
                     <p className="text-[10px] text-purple-500 font-bold uppercase tracking-wider">{item.statusAssinatura}</p>
                 </div>
             )
@@ -126,8 +123,7 @@ export default function PrestadoresList() {
             <DataTable
                 columns={columns}
                 data={prestadores}
-                onEdit={handleEdit}
-                onDelete={openDeleteModal}
+                onCancel={openCancelarModal}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 totalElements={totalElements}
@@ -144,14 +140,14 @@ export default function PrestadoresList() {
                 item={drawerConfig.item}
             />
 
-            {/* Modal de Confirmação */}
+            {/* Modal de Confirmação Ajustado para Cancelar */}
             <ConfirmModal
                 isOpen={modalConfig.isOpen}
                 onClose={() => setModalConfig({isOpen: false, item: null})}
-                onConfirm={handleDelete}
-                title="Excluir Prestador"
-                message={`Tem certeza que deseja excluir o prestador ${modalConfig.item?.nome}? Esta ação não poderá ser desfeita.`}
-                confirmText="Sim, excluir"
+                onConfirm={handleCancelar}
+                title="Cancelar Prestador"
+                message={`Tem certeza que deseja cancelar o prestador ${modalConfig.item?.nome}? Esta ação interromperá o acesso da unidade.`}
+                confirmText="Sim, cancelar prestador"
                 variant="danger"
             />
         </div>

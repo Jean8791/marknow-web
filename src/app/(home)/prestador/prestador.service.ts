@@ -2,6 +2,14 @@ import {api} from "@/services/api";
 import {PrestadorUpdate} from "@/types/prestador/prestadorUpdate";
 
 export const PrestadorService = {
+
+    getAll: async (params: any) => {
+        const response = await api.get('/prestador', {
+            params: params
+        });
+        return response.data;
+    },
+
     getById: async (oid: string) => {
         const response = await api.get<PrestadorUpdate>(`/prestador/${oid}`);
         return response.data;
