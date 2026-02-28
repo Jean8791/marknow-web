@@ -3,9 +3,10 @@ import {useCallback, useEffect, useState} from "react";
 import {notify} from "@/utils/toast-service";
 import {PlanoResponse} from "@/types/plano/planoResponse";
 import {PlanoService} from "@/app/(home)/plano/plano.service";
-import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export const usePlanoListController = () => {
+    const router = useRouter();
     const [planos, setPlanos] = useState<PlanoResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
@@ -39,7 +40,11 @@ export const usePlanoListController = () => {
     }
 
     const handleEdit = (item: PlanoResponse) => {
-        router.push(`/plano/${item.oid}`);
+        if (item?.oid) {
+            router.push(`/plano/${item.oid}`);
+        } else {
+            console.log("item.oid is null");
+        }
     };
 
     useEffect(() => {
