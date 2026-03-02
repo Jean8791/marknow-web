@@ -2,7 +2,7 @@
 
 import {Calendar, Search, ShieldCheck} from 'lucide-react';
 import DataTable, {Column} from '@/components/common/DataTable';
-import {useAssinaturasController} from './useAssinaturasController';
+import {useAssinaturasListController} from './useAssinaturasListController';
 import {AssinaturaResponse} from "@/types/assinatura/assinaturaResponse";
 
 export default function AssinaturaPage() {
@@ -16,7 +16,7 @@ export default function AssinaturaPage() {
         handlePageChange,
         handlePageSizeChange,
         handleSearch
-    } = useAssinaturasController();
+    } = useAssinaturasListController();
 
     const formatData = (data: string | null) => {
         if (!data) return '---';
@@ -29,6 +29,8 @@ export default function AssinaturaPage() {
                 return 'bg-green-50 text-green-600 border-green-100';
             case 'TRIAL':
                 return 'bg-blue-50 text-blue-600 border-blue-100';
+            case 'ATRASADO':
+                return 'bg-amber-50 text-amber-600 border-amber-100';
             case 'INADIMPLENTE':
                 return 'bg-orange-50 text-orange-600 border-orange-100';
             case 'SUSPENSA':
@@ -88,7 +90,7 @@ export default function AssinaturaPage() {
             key: 'toleranciaAte',
             render: (item) => (
                 <p className="text-xs text-orange-500 font-semibold italic">
-                    {item.status === 'INADIMPLENTE' ? formatData(item.toleranciaAte) : '-'}
+                    {item.status === 'ATRASADO' || item.status === 'INADIMPLENTE' ? formatData(item.toleranciaAte) : '-'}
                 </p>
             )
         }
@@ -125,7 +127,7 @@ export default function AssinaturaPage() {
                 onPageChange={handlePageChange}
                 onPageSizeChange={handlePageSizeChange}
                 isLoading={isLoading}
-                onCancel={(item) => console.log('Cancelar assinatura', item.oid)}
+                //  onCancel={(item) => console.log('Cancelar assinatura', item.oid)}
             />
         </div>
     );
