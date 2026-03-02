@@ -3,7 +3,7 @@ import {AssinaturaService} from "./assinatura.service";
 import {AssinaturaResponse} from "@/types/assinatura/assinaturaResponse";
 import {notify} from "@/utils/toast-service";
 
-export const useAssinaturasController = () => {
+export const useAssinaturasListController = () => {
     const [assinaturas, setAssinaturas] = useState<AssinaturaResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
