@@ -4,22 +4,21 @@ import Cookies from 'js-cookie';
 import {LoginService} from "@/app/auth/login/login.service";
 import {mensagemErro} from "@/utils/apiError";
 
+export const DEMO = {
+    email: process.env.NEXT_PUBLIC_DEMO_EMAIL || '',
+    senha: process.env.NEXT_PUBLIC_DEMO_SENHA || '',
+};
+
 export const useLoginController = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const entrar = useCallback(async (email: string, senha: string) => {
         if (loading) return;
 
         setLoading(true);
         setError(null);
-
-        const formData = new FormData(e.currentTarget);
-        const email = formData.get('email') as string;
-        const senha = formData.get('senha') as string;
 
         try {
             const data = await LoginService.login(email, senha);
@@ -48,5 +47,13 @@ export const useLoginController = () => {
         }
     }, [loading, router]);
 
-    return {loading, error, handleSubmit};
+    const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        await entrar(formData.get('email') as string, formData.get('senha') as string);
+    }, [entrar]);
+
+    const entrarComoVisitante = useCallback(() => entrar(DEMO.email, DEMO.senha), [entrar]);
+
+    return {loading, error, handleSubmit, entrarComoVisitante, demoDisponivel: !!(DEMO.email && DEMO.senha)};
 };

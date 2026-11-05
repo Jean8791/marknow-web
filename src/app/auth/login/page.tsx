@@ -2,12 +2,13 @@
 'use client';
 
 import {useState} from 'react';
-import {Eye, EyeOff, Loader2, Lock, LogIn, Mail} from 'lucide-react';
+import {Eye, EyeOff, Loader2, Lock, LogIn, Mail, UserRound} from 'lucide-react';
 import Link from 'next/link';
-import {useLoginController} from "./useLoginController";
+import {DEMO, useLoginController} from "./useLoginController";
+import AvisoAcademico from "@/components/common/AvisoAcademico";
 
 export default function LoginPage() {
-    const {loading, error, handleSubmit} = useLoginController();
+    const {loading, error, handleSubmit, entrarComoVisitante, demoDisponivel} = useLoginController();
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -99,6 +100,22 @@ export default function LoginPage() {
                         </Link>
                     </p>
                 </form>
+
+                {demoDisponivel && (
+                    <aside className="mt-8 p-5 rounded-3xl bg-purple-50/60 border border-purple-100 space-y-3 text-center">
+                        <p className="text-xs font-bold text-purple-700 uppercase tracking-widest">Quer só conhecer?</p>
+                        <p className="text-xs text-gray-600">
+                            Entre na unidade de demonstração (<code className="font-bold">{DEMO.email}</code> / <code className="font-bold">{DEMO.senha}</code>),
+                            com agenda, profissionais e serviços de exemplo.
+                        </p>
+                        <button type="button" onClick={entrarComoVisitante} disabled={loading}
+                                className="w-full py-3 rounded-2xl border-2 border-purple-200 text-purple-700 text-sm font-bold hover:bg-purple-100 transition-all disabled:opacity-50 flex justify-center items-center gap-2">
+                            <UserRound size={18}/> Entrar como visitante
+                        </button>
+                    </aside>
+                )}
+
+                <AvisoAcademico className="mt-6 justify-center text-center"/>
             </div>
         </div>
     );
