@@ -39,7 +39,7 @@ export function proxy(request: NextRequest) {
         }
     }
 
-    if (comecaCom(pathname, ['/usuario']) && role !== "ADMIN") {
+    if (comecaCom(pathname, ['/usuario', '/profissional', '/servico']) && role !== "ADMIN") {
         return paraDashboard();
     }
 
