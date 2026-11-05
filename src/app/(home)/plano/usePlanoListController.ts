@@ -27,7 +27,7 @@ export const usePlanoListController = () => {
             setPlanos(data.content);
             setTotalPages(data.totalPages);
             setTotalElements(data.totalElements);
-        } catch (error) {
+        } catch {
             notify.error("Erro ao carregar planos");
         } finally {
             setIsLoading(false);

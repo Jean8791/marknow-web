@@ -9,6 +9,7 @@ export interface UsuarioResponse {
     dddCelular: string;
     celular: string;
     status: 'ATIVO' | 'BLOQUEADO';
+    role: 'ADMIN' | 'OPERACIONAL';
     createdAt: string;
     updatedAt: string;
 }

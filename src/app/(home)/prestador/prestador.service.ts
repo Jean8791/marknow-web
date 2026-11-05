@@ -1,10 +1,12 @@
 import {api} from "@/services/api";
 import {PrestadorUpdate} from "@/types/prestador/prestadorUpdate";
+import {PrestadorDetalhado} from "@/types/prestador/prestadorDetalhado";
+import {ListParams, Page} from "@/types/common/page";
 
 export const PrestadorService = {
 
-    getAll: async (params: any) => {
-        const response = await api.get('/prestador', {
+    getAll: async (params: ListParams) => {
+        const response = await api.get<Page<PrestadorDetalhado>>('/prestador', {
             params: params
         });
         return response.data;

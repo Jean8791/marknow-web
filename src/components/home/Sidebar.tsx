@@ -9,8 +9,7 @@ const MENU_ITEMS = [
     {name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', roles: ['SUPER_ADMIN', 'ADMIN', 'OPERACIONAL']},
     {name: 'Prestadores', icon: Briefcase, path: '/prestador', roles: ['SUPER_ADMIN']},
     {name: 'Prestador', icon: Briefcase, path: '/prestador/oid', roles: ['ADMIN']},
-    {name: 'Usuários', icon: Users, path: '/usuario', roles: ['SUPER_ADMIN', 'ADMIN']},
-    {name: 'Usuário', icon: Users, path: '/usuario/oid', roles: ['OPERACIONAL']},
+    {name: 'Usuários', icon: Users, path: '/usuario', roles: ['ADMIN']},
     {name: 'Planos', icon: CreditCard, path: '/plano', roles: ['SUPER_ADMIN']},
     {name: 'Assinaturas', icon: ClipboardList, path: '/assinatura', roles: ['SUPER_ADMIN']},
     {name: 'Convite', icon: Mail, path: '/convite', roles: ['SUPER_ADMIN']},
@@ -60,9 +59,6 @@ export default function Sidebar() {
                     dynamicPath = `/prestador/${auth.prestadorOid}`;
                 }
 
-                if (item.path === '/usuario/oid' && auth.userOid) {
-                    dynamicPath = `/usuario/${auth.userOid}`;
-                }
 
                 return {...item, path: dynamicPath};
             });

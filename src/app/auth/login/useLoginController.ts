@@ -2,6 +2,7 @@ import React, {useCallback, useState} from "react";
 import {useRouter} from "next/navigation";
 import Cookies from 'js-cookie';
 import {LoginService} from "@/app/auth/login/login.service";
+import {mensagemErro} from "@/utils/apiError";
 
 export const useLoginController = () => {
     const [loading, setLoading] = useState(false);
@@ -25,17 +26,23 @@ export const useLoginController = () => {
 
             localStorage.setItem('@MarkNow:token', data.token);
             localStorage.setItem('@MarkNow:user-role', data.usuario.perfil);
+            localStorage.setItem('@MarkNow:user-name', data.usuario.nome);
+            localStorage.setItem('@MarkNow:user-oid', data.usuario.oid);
+            if (data.usuario.oidPrestador) {
+                localStorage.setItem('@MarkNow:user-prestador_oid', data.usuario.oidPrestador);
+            }
 
             const cookieOptions = {expires: 1, path: '/', sameSite: 'lax' as const};
             Cookies.set('marknow_token', data.token, cookieOptions);
             Cookies.set('marknow_role', data.usuario.perfil, cookieOptions);
             Cookies.set('marknow_user_oid', data.usuario.oid, cookieOptions);
-            Cookies.set('marknow_prestador_oid', data.usuario.oidPrestador, cookieOptions);
+            if (data.usuario.oidPrestador) {
+                Cookies.set('marknow_prestador_oid', data.usuario.oidPrestador, cookieOptions);
+            }
 
             router.push('/dashboard');
-        } catch (err: any) {
-            const msg = err.response?.data?.message || "Credenciais inválidas";
-            setError(msg);
+        } catch (err) {
+            setError(mensagemErro(err, "Credenciais inválidas"));
         } finally {
             setLoading(false);
         }

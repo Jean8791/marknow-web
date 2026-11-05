@@ -1,11 +1,10 @@
 import {PlanoResponse} from "@/types/plano/planoResponse";
 import {api} from "@/services/api";
+import {ListParams, Page} from "@/types/common/page";
 
 export const PlanoService = {
-    list: async (params: any) => {
-        const response = await api.get('/plano', {
-            params: params
-        });
+    list: async (params: ListParams) => {
+        const response = await api.get<Page<PlanoResponse>>('/plano', {params});
         return response.data;
     },
 
@@ -20,8 +19,4 @@ export const PlanoService = {
         }
         return api.post('/plano', payload);
     },
-
-    delete: async (oid: string) => {
-        return api.delete(`/plano/${oid}`);
-    }
 };

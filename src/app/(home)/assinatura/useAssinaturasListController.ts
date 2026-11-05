@@ -24,7 +24,7 @@ export const useAssinaturasListController = () => {
             setAssinaturas(data.content);
             setTotalPages(data.totalPages);
             setTotalElements(data.totalElements);
-        } catch (error) {
+        } catch {
             notify.error("Erro ao carregar assinaturas");
         } finally {
             setIsLoading(false);

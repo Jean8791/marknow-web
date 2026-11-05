@@ -1,5 +1,6 @@
 import {useCallback, useState} from "react";
 import {notify} from "@/utils/toast-service";
+import {mensagemErro} from "@/utils/apiError";
 import {ConviteResponse} from "@/types/convite/conviteResponse";
 import {ConviteService} from "@/app/(home)/convite/convites.service";
 import {ConviteCreateRequest} from "@/types/convite/conviteCreateRequest";
@@ -26,9 +27,8 @@ export const useConviteController = () => {
             const data = await ConviteService.create(payload);
             setInvite(data);
             notify.success("Convite criado com sucesso!");
-        } catch (err: any) {
-            const msg = err.response?.data?.message || "Erro ao criar convite.";
-            notify.error(msg);
+        } catch (err) {
+            notify.error(mensagemErro(err, "Erro ao criar convite."));
         } finally {
             setLoading(false);
         }

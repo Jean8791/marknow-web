@@ -13,6 +13,9 @@ export interface PrestadorCreateRequest {
     nome: string;
     documento: string;
     tipoPessoa: TipoPessoa;
+    email: string;
+    dddTelefone: string;
+    telefone: string;
     cep: string;
     logradouro: string;
     numero: string;
@@ -26,7 +29,11 @@ export interface PrestadorCreateRequest {
 export interface UsuarioCreateRequest {
     nome: string;
     email: string;
+    tipoPessoa: TipoPessoa;
+    dddTelefone: string;
+    telefone: string;
     senha: string;
+    comfirmarSenha: string;
     role: PrestadorUsuarioRole;
     oidPrestador?: string;
 }

@@ -145,9 +145,9 @@ export default function PrestadoresList() {
                 isOpen={modalConfig.isOpen}
                 onClose={() => setModalConfig({isOpen: false, item: null})}
                 onConfirm={handleCancelar}
-                title="Cancelar Prestador"
-                message={`Tem certeza que deseja cancelar o prestador ${modalConfig.item?.nome}? Esta ação interromperá o acesso da unidade.`}
-                confirmText="Sim, cancelar prestador"
+                title="Excluir Prestador"
+                message={`Tem certeza que deseja excluir o prestador ${modalConfig.item?.nome}? A assinatura, os usuários e o acesso da unidade serão removidos.`}
+                confirmText="Sim, excluir prestador"
                 variant="danger"
             />
         </div>
