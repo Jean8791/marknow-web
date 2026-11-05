@@ -1,12 +1,12 @@
 'use client';
 
-import {ArrowLeft, ArrowRight, Building2, Loader2, Lock, Mail, Ticket, User} from 'lucide-react';
+import {ArrowLeft, ArrowRight, Building2, CreditCard, Loader2, Lock, Mail, Phone, Ticket, User} from 'lucide-react';
 import {useRegisterController} from "./useRegisterController";
 import Link from 'next/link';
 
 export default function RegisterPage() {
     const {
-        step, nextStep, prevStep, loading, error,
+        step, nextStep, prevStep, loading, error, planos,
         handleRegister, urlInviteCode, handleCepBlur,
         address, setAddress, tipoPessoa, setTipoPessoa
     } = useRegisterController();
@@ -61,6 +61,23 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Plano</label>
+                            <div className="relative">
+                                <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300"/>
+                                <select name="oidPlano" defaultValue=""
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold appearance-none">
+                                    <option value="" disabled>Selecione um plano</option>
+                                    {planos.map(plano => (
+                                        <option key={plano.oid} value={plano.oid}>
+                                            {plano.nome} · R$ {Number(plano.valor).toFixed(2).replace('.', ',')}/mês
+                                            {plano.possuiTrial ? ` · ${plano.diasTrial} dias grátis` : ''}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-2 gap-4">
                             <button type="button" onClick={() => setTipoPessoa('PJ')}
                                     className={`p-4 rounded-2xl border-2 transition-all font-bold text-xs ${tipoPessoa === 'PJ' ? 'border-purple-500 bg-purple-50 text-purple-700' : 'border-gray-100 text-gray-400'}`}>
@@ -88,6 +105,22 @@ export default function RegisterPage() {
                                 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">{tipoPessoa === 'PJ' ? 'CNPJ' : 'CPF'}</label>
                             <input name="documento" placeholder="Apenas números"
                                    className="w-full px-5 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold"/>
+                        </div>
+
+                        <div className="grid grid-cols-4 gap-4">
+                            <div className="col-span-1 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">DDD</label>
+                                <input name="ddd" placeholder="11" maxLength={2} inputMode="numeric"
+                                       className="w-full px-4 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold text-center"/>
+                            </div>
+                            <div className="col-span-3 space-y-1">
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telefone / WhatsApp</label>
+                                <div className="relative">
+                                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300"/>
+                                    <input name="telefone" placeholder="99999-9999" inputMode="numeric"
+                                           className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -192,7 +225,16 @@ export default function RegisterPage() {
                                 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Senha</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300"/>
-                                <input name="adminSenha" type="password"
+                                <input name="adminSenha" type="password" autoComplete="new-password"
+                                       className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold"/>
+                            </div>
+                        </div>
+                        <div className="space-y-1">
+                            <label
+                                className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Confirmar Senha</label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300"/>
+                                <input name="adminSenhaConfirmacao" type="password" autoComplete="new-password"
                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-2xl outline-none text-sm font-semibold"/>
                             </div>
                         </div>

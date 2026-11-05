@@ -6,8 +6,8 @@ import {Toaster} from "sonner";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "MarkNow - Gestão de Convites",
-    description: "O teu SaaS de gestão de eventos e convites",
+    title: "MarkNow",
+    description: "SaaS de agenda multi-tenant para prestadores de serviço (projeto de portfólio).",
 };
 
 export default function RootLayout({children,}: {

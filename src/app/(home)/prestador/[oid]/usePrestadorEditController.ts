@@ -5,6 +5,7 @@ import {useCallback, useEffect, useState} from "react";
 import {PrestadorUpdate} from "@/types/prestador/prestadorUpdate";
 import {PrestadorService} from "@/app/(home)/prestador/prestador.service";
 import {notify} from "@/utils/toast-service";
+import {mensagemErro} from "@/utils/apiError";
 
 export function usePrestadorEditController() {
     const router = useRouter();
@@ -79,14 +80,9 @@ export function usePrestadorEditController() {
         try {
             await PrestadorService.update(oid as string, payload as PrestadorUpdate)
             notify.success("Prestador atualizado com sucesso!");
-            router.push('/prestador');
-        } catch (error: any) {
-            if (error.response?.status === 400) {
-                console.table(error.response.data.errors);
-                alert("Erro de validação. Verifique os campos preenchidos.");
-            } else {
-                console.error("Erro desconhecido:", error);
-            }
+            router.push('/dashboard');
+        } catch (error) {
+            notify.error(mensagemErro(error, "Erro ao atualizar o prestador."));
         } finally {
             setIsSaving(false);
         }

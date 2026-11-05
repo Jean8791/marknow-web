@@ -60,13 +60,13 @@ export default function UsuarioPage() {
             key: 'celular',
             render: (item) => (
                 <div className="text-xs text-gray-600 space-y-0.5 font-medium">
-                    {item.celular ? (
+                    {item.celular || item.telefone ? (
                         <p className="flex items-center gap-1">
                             <Phone size={12} className="text-gray-400"/>
-                            ({item.dddCelular}) {item.celular}
+                            ({item.celular ? item.dddCelular : item.dddTelefone}) {item.celular || item.telefone}
                         </p>
                     ) : (
-                        <p className="text-gray-300 italic">Sem celular</p>
+                        <p className="text-gray-300 italic">Sem telefone</p>
                     )}
                 </div>
             )

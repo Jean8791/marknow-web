@@ -2,7 +2,7 @@
 
 Front-end web do **MarkNow**, um SaaS de agenda para prestadores de serviço com vários profissionais atendendo. Consome a API [marknow-api](https://github.com/Jean8791/marknow-api).
 
-> **Status:** MVP em desenvolvimento. Login, cadastro por convite e as telas de administração (prestadores, usuários, planos, assinaturas e convites) estão prontos; a tela de agendamento é a próxima fase.
+> **Status:** MVP em desenvolvimento. Login, cadastro por convite e as telas de administração (prestadores, usuários, planos, assinaturas e convites) estão prontos; a tela de agendamento é a próxima fase e hoje mostra um aviso de módulo em desenvolvimento.
 
 ## Stack
 
@@ -13,11 +13,12 @@ Front-end web do **MarkNow**, um SaaS de agenda para prestadores de serviço com
 
 ## Funcionalidades
 
-- **Autenticação:** login, recuperação de senha e cadastro a partir de um link de convite (`/auth/register/[codigo]`).
-- **Painel administrativo:**
-  - dashboard;
-  - prestadores, com detalhes em painel lateral e edição de endereço;
-  - usuários, planos, assinaturas e convites.
+- **Autenticação:** login e cadastro a partir de um link de convite (`/auth/register/[codigo]`), com escolha do plano entre os planos ativos.
+- **Painel por perfil:**
+  - **super admin:** dashboard com totais, prestadores (detalhes em painel lateral, busca e exclusão), planos, assinaturas e convites;
+  - **admin do prestador:** dashboard, edição do próprio prestador e cadastro de usuários (criar, editar perfil e status, trocar senha e excluir);
+  - **operacional:** dashboard.
+- **Proteção de rotas** no `proxy.ts` conforme o perfil, espelhando as permissões da API (a API continua sendo quem garante o acesso).
 - **Cliente HTTP centralizado** (`services/api.ts`): envia o token JWT em toda chamada, exceto nas rotas públicas de autenticação.
 - **Componentes reutilizáveis:** tabela de dados, modal de confirmação, header, sidebar e footer.
 - **Formatação** de CPF/CNPJ e telefone.
@@ -29,13 +30,13 @@ Cada tela separa a apresentação (`page.tsx`) da lógica em um **hook controlle
 ```
 src/
 ├── app/
-│   ├── auth/          login, cadastro por convite, recuperação de senha
+│   ├── auth/          login e cadastro por convite
 │   └── (home)/        área logada: dashboard, prestador, usuario, plano,
 │                      assinatura, convite, agendamento
 ├── components/        tabela, modais, header, sidebar, footer
 ├── services/api.ts    instância do Axios com o token
 ├── types/             tipos de request e response por domínio
-└── utils/             formatação e notificações
+└── utils/             formatação, notificações e mensagens de erro da API
 ```
 
 ## Como rodar

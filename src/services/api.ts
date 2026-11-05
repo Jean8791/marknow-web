@@ -10,12 +10,7 @@ api.interceptors.request.use((config) => {
     const token = localStorage.getItem('@MarkNow:token');
 
     // Lista de endpoints que NÃO devem enviar o token
-    const publicEndpoints = [
-        '/auth/login',
-        '/auth/cadastro',
-        '/auth/enviar-email-recuperacao',
-        '/auth/resetar-senha'
-    ];
+    const publicEndpoints = ['/auth/'];
 
     // Verifica se a URL atual da requisição está na lista pública
     const isPublicRoute = publicEndpoints.some(endpoint => config.url?.includes(endpoint));
@@ -44,11 +39,8 @@ api.interceptors.response.use(
 
         if (status === 401 && !isAuthRoute) {
             // Limpeza de Cookies
-            const cookieOptions = {path: '/'}; // Garante a remoção em qualquer path
-            Cookies.remove('marknow_token', cookieOptions);
-            Cookies.remove('marknow_role', cookieOptions);
-            Cookies.remove('marknow_user_oid', cookieOptions);
-            Cookies.remove('marknow_prestador_oid', cookieOptions);
+            ['marknow_token', 'marknow_role', 'marknow_user_oid', 'marknow_prestador_oid']
+                .forEach(nome => Cookies.remove(nome, {path: '/'}));
 
             // Limpeza de LocalStorage
             localStorage.clear();

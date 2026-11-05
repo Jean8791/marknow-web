@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {notify} from "@/utils/toast-service";
+import {mensagemErro} from "@/utils/apiError";
 import {PlanoService} from "@/app/(home)/plano/plano.service";
 import {PlanoRequest} from "@/types/plano/planoRequest";
 
@@ -44,7 +45,7 @@ export const usePlanoFormController = () => {
             notify.success("Plano salvo com sucesso!");
             router.push('/plano');
         } catch (error) {
-            notify.error("Erro ao salvar plano.");
+            notify.error(mensagemErro(error, "Erro ao salvar plano."));
         } finally {
             setIsSaving(false);
         }

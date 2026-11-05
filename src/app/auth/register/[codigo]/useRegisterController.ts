@@ -1,20 +1,23 @@
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {notify} from "@/utils/toast-service";
+import {mensagemErro} from "@/utils/apiError";
 import {CadastroCreateRequest} from "@/types/auth/register";
+import {PlanoResponse} from "@/types/plano/planoResponse";
 import {RegisterService} from "@/app/auth/register/[codigo]/register.service";
+
+const apenasDigitos = (valor: FormDataEntryValue | null) => String(valor ?? '').replace(/\D/g, '');
 
 export const useRegisterController = () => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [planos, setPlanos] = useState<PlanoResponse[]>([]);
     const params = useParams();
     const router = useRouter();
 
-    // Estado para o tipo de pessoa
     const [tipoPessoa, setTipoPessoa] = useState<'PF' | 'PJ'>('PJ');
 
-    // Estado para os campos controlados pelo buscador de CEP
     const [address, setAddress] = useState({
         cep: '',
         logradouro: '',
@@ -26,13 +29,25 @@ export const useRegisterController = () => {
     const rawCodigo = params?.codigo as string;
     const urlInviteCode = rawCodigo === "new" ? "" : rawCodigo;
 
-    // Navegação manual para evitar conflitos de validação HTML
+    useEffect(() => {
+        RegisterService.planos()
+            .then(setPlanos)
+            .catch(() => notify.error("Não foi possível carregar os planos."));
+    }, []);
+
     const nextStep = (formData: FormData) => {
-        // Validação para não deixar avançar vazio
         if (step === 1) {
+            if (!formData.get('codigoInvite') || !formData.get('oidPlano')) {
+                notify.error("Informe o código do convite e escolha um plano.");
+                return false;
+            }
             if (!formData.get('prestadorNome') || !formData.get('documento')) {
                 notify.error("Preencha os dados da unidade e o documento.");
-                return false; // Retorna falso para indicar que não deve avançar
+                return false;
+            }
+            if (apenasDigitos(formData.get('ddd')).length !== 2 || apenasDigitos(formData.get('telefone')).length < 8) {
+                notify.error("Informe o DDD e o telefone da unidade.");
+                return false;
             }
         }
         if (step === 2) {
@@ -43,7 +58,7 @@ export const useRegisterController = () => {
         }
 
         setStep(prev => prev + 1);
-        return true; // Avançou com sucesso
+        return true;
     };
 
     const prevStep = () => setStep(prev => prev - 1);
@@ -72,16 +87,29 @@ export const useRegisterController = () => {
     };
 
     const handleRegister = useCallback(async (formData: FormData) => {
+        const senha = formData.get('adminSenha') as string;
+        if (senha !== formData.get('adminSenhaConfirmacao')) {
+            setError("A confirmação de senha não confere.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
+        const email = (formData.get('adminEmail') as string)?.trim();
+        const ddd = apenasDigitos(formData.get('ddd'));
+        const telefone = apenasDigitos(formData.get('telefone'));
+
         const payload: CadastroCreateRequest = {
-            codigo: (formData.get('codigoInvite') as string) || urlInviteCode,
-            oidPlano: "76329437-9753-4804-9549-39744155169a",
+            codigo: ((formData.get('codigoInvite') as string) || urlInviteCode).trim().toUpperCase(),
+            oidPlano: formData.get('oidPlano') as string,
             prestador: {
                 nome: formData.get('prestadorNome') as string,
-                documento: (formData.get('documento') as string)?.replace(/\D/g, ''),
+                documento: apenasDigitos(formData.get('documento')),
                 tipoPessoa: tipoPessoa,
+                email,
+                dddTelefone: ddd,
+                telefone,
                 cep: address.cep.replace(/\D/g, ''),
                 logradouro: address.logradouro,
                 numero: formData.get('numero') as string,
@@ -92,8 +120,12 @@ export const useRegisterController = () => {
             },
             usuario: {
                 nome: formData.get('adminNome') as string,
-                email: formData.get('adminEmail') as string,
-                senha: formData.get('adminSenha') as string,
+                email,
+                tipoPessoa: 'PF',
+                dddTelefone: ddd,
+                telefone,
+                senha,
+                comfirmarSenha: formData.get('adminSenhaConfirmacao') as string,
                 role: 'ADMIN'
             }
         };
@@ -102,8 +134,8 @@ export const useRegisterController = () => {
             await RegisterService.register(payload);
             notify.success("Cadastro realizado com sucesso!");
             router.push('/auth/login');
-        } catch (err: any) {
-            const msg = err.response?.data?.message || "Erro ao realizar cadastro.";
+        } catch (err) {
+            const msg = mensagemErro(err, "Erro ao realizar cadastro.");
             setError(msg);
             notify.error(msg);
         } finally {
@@ -112,7 +144,7 @@ export const useRegisterController = () => {
     }, [router, address, tipoPessoa, urlInviteCode]);
 
     return {
-        step, nextStep, prevStep, loading, error,
+        step, nextStep, prevStep, loading, error, planos,
         handleRegister, urlInviteCode, handleCepBlur,
         address, setAddress, tipoPessoa, setTipoPessoa
     };

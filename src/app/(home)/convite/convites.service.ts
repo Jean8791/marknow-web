@@ -1,5 +1,6 @@
 import {api} from "@/services/api";
 import {PagedConviteResponse} from "@/types/convite/pagedConviteResponse";
+import {ConviteCreateRequest} from "@/types/convite/conviteCreateRequest";
 
 
 export const ConviteService = {
@@ -15,7 +16,7 @@ export const ConviteService = {
         return response.data;
     },
 
-    create: async (data: any) => {
+    create: async (data: ConviteCreateRequest) => {
         const response = await api.post('/convite', data);
         return response.data;
     }

@@ -23,8 +23,8 @@ export default function HomeHeader() {
 
     const handleLogout = () => {
         localStorage.clear();
-        Cookies.remove('marknow_role', {path: '/'});
-        Cookies.remove('marknow_token', {path: '/'});
+        ['marknow_token', 'marknow_role', 'marknow_user_oid', 'marknow_prestador_oid']
+            .forEach(nome => Cookies.remove(nome, {path: '/'}));
         router.push('/auth/login');
     };
 

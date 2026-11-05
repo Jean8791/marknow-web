@@ -1,25 +1,17 @@
 import {NextRequest, NextResponse} from "next/server";
 
+const ROTAS_SUPER_ADMIN = ['/plano', '/assinatura', '/convite'];
+const ROTAS_PRESTADOR = ['/agendamento'];
+
+const comecaCom = (pathname: string, rotas: string[]) =>
+    rotas.some(rota => pathname === rota || pathname.startsWith(`${rota}/`));
+
 export function proxy(request: NextRequest) {
     const token = request.cookies.get("marknow_token")?.value;
     const role = request.cookies.get("marknow_role")?.value;
     const prestadorOid = request.cookies.get("marknow_prestador_oid")?.value;
-    const userOid = request.cookies.get("marknow_user_oid")?.value;
 
     const {pathname} = request.nextUrl;
-
-    if (process.env.NODE_ENV !== 'production') {
-        console.log("Proxy Request:", {pathname, token, role, prestadorOid, userOid});
-    }
-
-    if (
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/api') ||
-        pathname.includes('.') ||
-        pathname.startsWith('/favicon.ico')
-    ) {
-        return NextResponse.next();
-    }
 
     if (pathname.startsWith('/auth')) {
         return NextResponse.next();
@@ -29,22 +21,30 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL("/auth/login", request.url));
     }
 
-    if (pathname === "/prestador" && role !== "SUPER_ADMIN") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+    const paraDashboard = () => NextResponse.redirect(new URL("/dashboard", request.url));
+
+    if (comecaCom(pathname, ROTAS_SUPER_ADMIN) && role !== "SUPER_ADMIN") {
+        return paraDashboard();
     }
 
-    if (pathname.startsWith("/prestador/") && role === "ADMIN") {
+    if (pathname === "/prestador" && role !== "SUPER_ADMIN") {
+        return paraDashboard();
+    }
+
+    if (pathname.startsWith("/prestador/")) {
+        if (role !== "ADMIN") return paraDashboard();
         const targetOid = pathname.split("/")[2];
         if (targetOid && targetOid !== prestadorOid) {
             return NextResponse.redirect(new URL(`/prestador/${prestadorOid}`, request.url));
         }
     }
 
-    if (pathname.startsWith("/usuario/") && role === "OPERACIONAL") {
-        const targetOid = pathname.split("/")[2];
-        if (targetOid && targetOid !== userOid) {
-            return NextResponse.redirect(new URL(`/usuario/${userOid}`, request.url));
-        }
+    if (comecaCom(pathname, ['/usuario']) && role !== "ADMIN") {
+        return paraDashboard();
+    }
+
+    if (comecaCom(pathname, ROTAS_PRESTADOR) && role === "SUPER_ADMIN") {
+        return paraDashboard();
     }
 
     return NextResponse.next();

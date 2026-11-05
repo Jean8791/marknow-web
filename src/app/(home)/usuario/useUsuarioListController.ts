@@ -24,6 +24,7 @@ export const useUsuarioListController = () => {
             });
             setUsuario(data.content);
             setTotalPages(data.totalPages);
+            setTotalElements(data.totalElements);
         } catch (error) {
             console.error(error);
         } finally {

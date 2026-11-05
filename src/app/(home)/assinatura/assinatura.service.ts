@@ -1,18 +1,10 @@
 import {api} from "@/services/api";
 import {AssinaturaResponse} from "@/types/assinatura/assinaturaResponse";
+import {ListParams, Page} from "@/types/common/page";
 
 export const AssinaturaService = {
-    list: async (params: any) => {
-        const response = await api.get('/assinatura', {params});
+    list: async (params: ListParams) => {
+        const response = await api.get<Page<AssinaturaResponse>>('/assinatura', {params});
         return response.data;
     },
-
-    getById: async (oid: string) => {
-        const {data} = await api.get<AssinaturaResponse>(`/assinatura/${oid}`);
-        return data;
-    },
-
-    cancel: async (oid: string) => {
-        return api.post(`/assinatura/${oid}/cancelar`);
-    }
 };
