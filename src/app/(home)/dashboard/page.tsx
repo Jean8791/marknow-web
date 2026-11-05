@@ -1,16 +1,17 @@
 'use client';
 
-import {CalendarClock, Loader2} from 'lucide-react';
+import Link from 'next/link';
+import {AlertTriangle, CalendarClock, Loader2} from 'lucide-react';
 import {useDashboardController} from "@/app/(home)/dashboard/useDashboardController";
 
 const DESCRICAO_PERFIL: Record<string, string> = {
     SUPER_ADMIN: 'Administração da plataforma: prestadores, planos, assinaturas e convites.',
-    ADMIN: 'Administração da sua unidade: dados do prestador e usuários.',
-    OPERACIONAL: 'Acesso operacional da unidade.',
+    ADMIN: 'Agenda, profissionais, serviços e usuários da sua unidade.',
+    OPERACIONAL: 'Agenda da unidade: criar, remarcar e cancelar atendimentos.',
 };
 
 export default function DashboardPage() {
-    const {stats, nome, perfil} = useDashboardController();
+    const {stats, uso, nome, perfil, iconeUso: IconeUso} = useDashboardController();
 
     return (
         <div className="space-y-8">
@@ -36,19 +37,42 @@ export default function DashboardPage() {
                 </div>
             )}
 
-            {perfil !== 'SUPER_ADMIN' && (
-                <div className="bg-white rounded-3xl border border-dashed border-purple-200 p-8 flex items-start gap-4">
-                    <div className="p-3 rounded-2xl bg-purple-50 text-purple-600">
-                        <CalendarClock size={24}/>
+            {uso && (
+                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-3">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="p-3 rounded-2xl bg-amber-50 text-amber-600"><IconeUso size={22}/></div>
+                            <div>
+                                <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Uso do plano neste mês</p>
+                                <p className="text-lg font-black text-gray-800">
+                                    {uso.usados}{uso.limite ? ` de ${uso.limite} agendamentos` : ' agendamentos'}
+                                </p>
+                            </div>
+                        </div>
+                        {uso.alerta && (
+                            <span className={`flex items-center gap-1 text-xs font-bold ${uso.bloqueado ? 'text-red-600' : 'text-amber-600'}`}>
+                                <AlertTriangle size={14}/> {uso.bloqueado ? 'Limite atingido' : 'Perto do limite'}
+                            </span>
+                        )}
                     </div>
-                    <div>
-                        <h3 className="font-bold text-gray-800">Agenda em desenvolvimento</h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                            O módulo de agendamento por horários é a próxima fase do MarkNow. Por enquanto, a
-                            plataforma cobre contas, planos, assinaturas, convites e usuários da unidade.
-                        </p>
-                    </div>
+                    {uso.limite && (
+                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+                            <div className={`h-full rounded-full ${uso.bloqueado ? 'bg-red-500' : uso.alerta ? 'bg-amber-500' : 'bg-purple-600'}`}
+                                 style={{width: `${uso.percentual}%`}}/>
+                        </div>
+                    )}
                 </div>
+            )}
+
+            {perfil !== 'SUPER_ADMIN' && perfil && (
+                <Link href="/agendamento"
+                      className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex items-center gap-4 hover:shadow-md transition-shadow">
+                    <div className="p-3 rounded-2xl bg-purple-50 text-purple-600"><CalendarClock size={24}/></div>
+                    <div>
+                        <h3 className="font-bold text-gray-800">Abrir a agenda</h3>
+                        <p className="text-sm text-gray-500">Veja o dia por profissional, agende, remarque e avise o cliente pelo WhatsApp.</p>
+                    </div>
+                </Link>
             )}
         </div>
     );

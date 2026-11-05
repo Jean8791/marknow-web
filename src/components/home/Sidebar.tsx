@@ -3,7 +3,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {Briefcase, Calendar, ClipboardList, CreditCard, LayoutDashboard, Mail, Users} from 'lucide-react';
+import {Briefcase, Calendar, ClipboardList, CreditCard, LayoutDashboard, Mail, Scissors, UserCog, Users} from 'lucide-react';
 
 const MENU_ITEMS = [
     {name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', roles: ['SUPER_ADMIN', 'ADMIN', 'OPERACIONAL']},
@@ -13,7 +13,9 @@ const MENU_ITEMS = [
     {name: 'Planos', icon: CreditCard, path: '/plano', roles: ['SUPER_ADMIN']},
     {name: 'Assinaturas', icon: ClipboardList, path: '/assinatura', roles: ['SUPER_ADMIN']},
     {name: 'Convite', icon: Mail, path: '/convite', roles: ['SUPER_ADMIN']},
-    {name: 'Agendamentos', icon: Calendar, path: '/agendamento', roles: ['ADMIN', 'OPERACIONAL']},
+    {name: 'Agenda', icon: Calendar, path: '/agendamento', roles: ['ADMIN', 'OPERACIONAL']},
+    {name: 'Profissionais', icon: UserCog, path: '/profissional', roles: ['ADMIN']},
+    {name: 'Serviços', icon: Scissors, path: '/servico', roles: ['ADMIN']},
 ];
 
 export default function Sidebar() {
