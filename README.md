@@ -4,6 +4,13 @@ Front-end web do **MarkNow**, um SaaS de agenda para prestadores de serviço com
 
 > **Status:** MVP funcional. Login, cadastro por convite, administração (prestadores, usuários, planos, assinaturas e convites) e a agenda interna (profissionais, serviços e agendamentos) estão prontos.
 
+## Demonstração online
+
+- **Aplicação:** https://marknow-web.vercel.app (botão "Entrar como visitante", ou `demo@marknow.com` / `demo1234`)
+- **API e Swagger:** https://marknow-back.onrender.com (a raiz abre o Swagger)
+
+> Projeto acadêmico, para fins de estudo. Os dados da demonstração são fictícios e a agenda é preenchida automaticamente. A API roda no plano gratuito do Render e hiberna sem uso: a primeira requisição pode levar alguns segundos.
+
 ## Stack
 
 - **Next.js 16** (App Router) e **React 19**
