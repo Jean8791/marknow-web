@@ -85,7 +85,7 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 bg-[#2D0066] text-white text-sm font-bold rounded-2xl hover:bg-purple-900 focus:ring-4 focus:ring-purple-100 transition-all disabled:opacity-50 shadow-lg shadow-purple-50 flex justify-center items-center gap-2 active:scale-[0.98]"
+                        className="w-full py-4 bg-marca text-white text-sm font-bold rounded-2xl hover:brightness-110 focus:ring-4 focus:ring-purple-100 transition-all disabled:opacity-50 shadow-lg shadow-purple-50 flex justify-center items-center gap-2 active:scale-[0.98]"
                     >
                         {loading ? <Loader2 className="animate-spin h-5 w-5"/> : (
                             <>Entrar no Painel <LogIn size={18}/></>

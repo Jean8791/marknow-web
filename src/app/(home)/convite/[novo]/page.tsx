@@ -91,7 +91,7 @@ export default function ConvitePage() {
                         )}
 
                         <div className="pt-4">
-                            <button type="submit" disabled={loading} className="w-full py-4 bg-[#2D0066] text-white font-bold rounded-2xl hover:bg-purple-900 transition-all flex justify-center items-center gap-2 disabled:opacity-50 shadow-xl shadow-purple-100 active:scale-[0.98]">
+                            <button type="submit" disabled={loading} className="w-full py-4 bg-marca text-white font-bold rounded-2xl hover:brightness-110 transition-all flex justify-center items-center gap-2 disabled:opacity-50 shadow-xl shadow-purple-100 active:scale-[0.98]">
                                 {loading ? <Loader2 className="animate-spin" /> : <>Confirmar e Gerar Convite <Ticket size={18} /></>}
                             </button>
                         </div>
@@ -101,7 +101,7 @@ export default function ConvitePage() {
                 <div className="lg:col-span-5 h-full">
                     {/* ... Restante do código do card de convite gerado ... */}
                     {invite ? (
-                        <div className="bg-[#2D0066] p-10 rounded-[40px] text-white h-full flex flex-col justify-between relative overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-500">
+                        <div className="bg-marca p-10 rounded-[40px] text-white h-full flex flex-col justify-between relative overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-500">
                             {/* ... (mesmo conteúdo do card anterior) */}
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
                             <div className="relative">

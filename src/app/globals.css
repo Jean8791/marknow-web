@@ -1,12 +1,41 @@
 @import "tailwindcss";
 
+@theme {
+    --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+    /* Roxo mais vivo que o padrão do Tailwind */
+    --color-purple-50: #f7f1ff;
+    --color-purple-100: #eddfff;
+    --color-purple-200: #dcc4ff;
+    --color-purple-300: #c39cff;
+    --color-purple-400: #a86bff;
+    --color-purple-500: #8f3dff;
+    --color-purple-600: #7a1fee;
+    --color-purple-700: #6412c9;
+    --color-purple-800: #4e109f;
+    --color-purple-900: #3b0d78;
+}
+
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    --background: #f7f4fe;
+    --foreground: #1c1530;
 }
 
 body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Gradiente da marca: botões, logo, item ativo do menu */
+@utility bg-marca {
+    background-image: linear-gradient(135deg, var(--color-purple-600), var(--color-fuchsia-500));
+}
+
+/* Cartão com cara de agenda: sombra arroxeada e uma lombada à esquerda */
+@utility cartao {
+    background-color: #fff;
+    border-radius: var(--radius-2xl);
+    box-shadow: inset 4px 0 0 var(--color-purple-500),
+    0 1px 2px rgb(60 20 120 / 0.06),
+    0 10px 24px -14px rgb(122 31 238 / 0.25);
 }

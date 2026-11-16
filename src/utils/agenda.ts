@@ -41,3 +41,7 @@ export const whatsappProfissional = (a: Agendamento, ddd: string, telefone: stri
         : `Agendamento: ${a.clienteNome} (${a.servicoNome}) em ${dataCurta(a.inicio)} às ${hora(a.inicio)}. Telefone do cliente: (${a.clienteDdd}) ${a.clienteTelefone}.`;
     return linkWhatsapp(ddd, telefone, texto);
 };
+
+export const minutosDoDia = (hhmm: string) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3, 5));
+export const rotuloHora = (minutos: number) =>
+    `${String(Math.floor(minutos / 60)).padStart(2, '0')}:${String(minutos % 60).padStart(2, '0')}`;

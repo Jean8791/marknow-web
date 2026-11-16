@@ -22,7 +22,7 @@ export default function PlanoFormPage() {
                     <h1 className="text-xl font-bold text-gray-800">{oid ? 'Editar Plano' : 'Novo Plano'}</h1>
                 </div>
             {/* Salvar */}
-                <button type="submit" disabled={isSaving} className="bg-[#2D0066] text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-lg disabled:opacity-50">{isSaving ? <Loader2 className="animate-spin" size={20}/> : <Save size={20}/>}Salvar Plano</button>
+                <button type="submit" disabled={isSaving} className="bg-marca text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg disabled:opacity-50">{isSaving ? <Loader2 className="animate-spin" size={20}/> : <Save size={20}/>}Salvar Plano</button>
             </div>
 
             <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm space-y-8">

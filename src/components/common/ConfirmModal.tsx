@@ -29,7 +29,7 @@ export default function ConfirmModal({
 
     const colors = {
         danger: 'bg-red-600 hover:bg-red-700 shadow-red-100 text-white',
-        primary: 'bg-[#2D0066] hover:bg-purple-900 shadow-purple-100 text-white'
+        primary: 'bg-marca hover:brightness-110 shadow-purple-100 text-white'
     };
 
     const iconColors = {

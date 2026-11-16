@@ -253,7 +253,7 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-[2] py-4 bg-[#2D0066] text-white font-bold rounded-2xl hover:bg-purple-900 transition-all shadow-lg flex justify-center items-center gap-2 text-sm active:scale-[0.98]"
+                            className="flex-[2] py-4 bg-marca text-white font-bold rounded-2xl hover:brightness-110 transition-all shadow-lg flex justify-center items-center gap-2 text-sm active:scale-[0.98]"
                         >
                             {loading ? <Loader2
                                 className="animate-spin"/> : (step === 3 ? "Finalizar Cadastro" : "Próximo Passo")}

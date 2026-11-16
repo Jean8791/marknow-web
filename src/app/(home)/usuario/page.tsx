@@ -6,6 +6,7 @@ import {useUsuarioListController} from "@/app/(home)/usuario/useUsuarioListContr
 import {UsuarioResponse} from "@/types/usuario/usuarioResponse";
 import {formatDocumento} from "@/utils/formatDocumento";
 import Link from 'next/link';
+import PageHeader from "@/components/common/PageHeader";
 
 export default function UsuarioPage() {
     const {
@@ -87,19 +88,14 @@ export default function UsuarioPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Usuários</h1>
-                    <p className="text-sm text-gray-500 font-medium">Gerencie o acesso dos colaboradores da sua
-                        unidade.</p>
-                </div>
+            <PageHeader titulo="Usuários" subtitulo="Gerencie o acesso dos colaboradores da sua unidade.">
                 <Link href="/usuario/new"
-                      className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-lg shadow-purple-100 active:scale-95">
+                      className="bg-marca text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-purple-100 active:scale-95">
                     <UserPlus size={20}/> Novo Usuário
                 </Link>
-            </div>
+            </PageHeader>
 
-            <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-sm ring-1 ring-purple-100">
                 <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18}/>
                     <input

@@ -13,6 +13,7 @@ import {Agendamento, Profissional, Servico, UsoAgendamentos} from "@/types/agend
 import {notify} from "@/utils/toast-service";
 import {mensagemErro} from "@/utils/apiError";
 import {dataLonga, diaSemanaIso, hojeIso, hora, somarDias, whatsappCliente, whatsappProfissional} from "@/utils/agenda";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function AgendaPage() {
     const [data, setData] = useState(hojeIso);
@@ -96,15 +97,11 @@ export default function AgendaPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-wrap justify-between items-end gap-4">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Agenda</h1>
-                    <p className="text-sm text-gray-500 font-medium first-letter:uppercase">{dataLonga(data)}</p>
-                </div>
+            <PageHeader titulo="Agenda" subtitulo={dataLonga(data)}>
                 <button onClick={() => setModal({aberto: true})} disabled={semCadastro || uso?.bloqueado} className={BOTAO_PRIMARIO}>
                     <Plus size={20}/> Novo Agendamento
                 </button>
-            </div>
+            </PageHeader>
 
             {uso?.alerta && (
                 <div className={`flex items-center gap-3 p-4 rounded-2xl text-sm font-semibold ${uso.bloqueado ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700'}`}>
@@ -151,7 +148,7 @@ export default function AgendaPage() {
             ) : (
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {colunas.map(({profissional, atendeNoDia, itens}) => (
-                        <section key={profissional.oid} className="bg-white rounded-3xl border border-gray-100 shadow-sm p-4 space-y-3">
+                        <section key={profissional.oid} className="cartao p-4 space-y-3">
                             <header className="flex items-center justify-between">
                                 <h2 className="font-bold text-gray-800">{profissional.nome}</h2>
                                 <button onClick={() => setModal({aberto: true, profissional: profissional.oid})} disabled={uso?.bloqueado}

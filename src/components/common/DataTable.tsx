@@ -47,7 +47,7 @@ export default function DataTable<T>({
         return (
             <div className="w-full space-y-4 animate-pulse">
                 {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="h-16 bg-gray-100 rounded-2xl w-full"/>
+                    <div key={i} className="h-16 bg-purple-100/60 rounded-2xl w-full"/>
                 ))}
             </div>
         );
@@ -55,7 +55,7 @@ export default function DataTable<T>({
 
     return (
         <div className="space-y-4">
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+            <div className="cartao overflow-hidden flex flex-col">
 
                 {/* CONTAINER COM SCROLL INTERNO */}
                 {/* A altura h-[500px] pode ser alterada conforme sua necessidade */}
@@ -66,8 +66,8 @@ export default function DataTable<T>({
                             {columns.map((col, index) => (
                                 <th
                                     key={index}
-                                    className={`px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider 
-                                    bg-gray-50/90 backdrop-blur-sm border-b border-gray-100
+                                    className={`px-6 py-4 text-xs font-bold text-purple-700 uppercase tracking-wider
+                                    bg-purple-50/95 backdrop-blur-sm
                                     ${col.headerClassName || ''} 
                                     ${col.align === 'center' ? 'text-center' : 'text-left'}`}
                                 >
@@ -75,16 +75,16 @@ export default function DataTable<T>({
                                 </th>
                             ))}
                             {(onEdit || onCancel || onDelete || onView) && (
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center bg-gray-50/90 backdrop-blur-sm border-b border-gray-100">
+                                <th className="px-6 py-4 text-xs font-bold text-purple-700 uppercase tracking-wider text-center bg-purple-50/95 backdrop-blur-sm">
                                     Ações
                                 </th>
                             )}
                         </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody className="divide-y divide-dashed divide-purple-100">
                         {data && data.length > 0 ? (
                             data.map((item, rowIndex) => (
-                                <tr key={rowIndex} className="hover:bg-gray-50/50 transition-colors group">
+                                <tr key={rowIndex} className="hover:bg-purple-50/60 transition-colors group">
                                     {columns.map((col, colIndex) => (
                                         <td
                                             key={colIndex}
@@ -144,7 +144,7 @@ export default function DataTable<T>({
 
                 {/* --- RODAPÉ FIXO (Sempre visível abaixo do scroll) --- */}
                 <div
-                    className="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    className="px-6 py-4 bg-purple-50/40 border-t border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-6">
                         <div className="text-sm text-gray-500 font-medium">
                             Total de <span className="text-gray-800 font-bold">{totalElements}</span> registros

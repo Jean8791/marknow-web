@@ -6,6 +6,7 @@ import DataTable, {Column} from '@/components/common/DataTable';
 import {useConviteListController} from './useConviteListController';
 import {notify} from '@/utils/toast-service';
 import {ConviteResponse} from "@/types/convite/conviteResponse";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function ConvitesList() {
     const {
@@ -120,21 +121,17 @@ export default function ConvitesList() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight">Convites</h1>
-                    <p className="text-sm text-gray-500 font-medium">Gestão de códigos e links de cadastro.</p>
-                </div>
+            <PageHeader titulo="Convites" subtitulo="Gestão de códigos e links de cadastro.">
                 <Link
                     href="/convite/novo"
-                    className="flex items-center gap-2 bg-[#2D0066] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-purple-900 transition-all shadow-sm active:scale-95"
+                    className="flex items-center gap-2 bg-marca text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-sm active:scale-95"
                 >
                     <Plus size={18}/>
                     Novo Convite
                 </Link>
-            </div>
+            </PageHeader>
 
-            <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-sm ring-1 ring-purple-100">
                 <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18}/>
                     <input

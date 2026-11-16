@@ -44,7 +44,7 @@ export default function PrestadorForm() {
                         <p className="text-xs text-gray-500">{oid ? `Editando: ${prestador?.nome}` : 'Preencha os dados da nova unidade.'}</p>
                     </div>
                 </div>
-                <button type="submit" disabled={isSaving} className="bg-[#2D0066] text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="submit" disabled={isSaving} className="bg-marca text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                     {isSaving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
                     {oid ? 'Salvar Alterações' : 'Finalizar Cadastro'}
                 </button>
@@ -53,7 +53,7 @@ export default function PrestadorForm() {
             <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Container da Logo */}
-                    <section className="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center space-y-4 h-full">
+                    <section className="lg:col-span-1 cartao p-6 flex flex-col items-center justify-center text-center space-y-4 h-full">
                         <div className="flex items-center gap-2 text-purple-600 font-bold w-full border-b border-gray-50 pb-4 mb-2">
                             <ImageIcon size={20} />
                             <h2>Logo</h2>
@@ -79,7 +79,7 @@ export default function PrestadorForm() {
                     </section>
 
                     {/* Dados da Unidade */}
-                    <section className="lg:col-span-3 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <section className="lg:col-span-3 cartao p-8">
                         <div className="flex items-center gap-2 text-purple-600 font-bold mb-6 border-b border-gray-50 pb-4">
                             <Building2 size={20} />
                             <h2>Dados da Unidade</h2>
@@ -141,7 +141,7 @@ export default function PrestadorForm() {
                 </div>
 
                 {/* SEÇÃO: ENDEREÇO COMPLETO */}
-                <section className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                <section className="cartao p-8">
                     <div className="flex items-center gap-2 text-purple-600 font-bold mb-6 border-b border-gray-50 pb-4">
                         <MapPin size={20} />
                         <h2>Endereço de Atendimento</h2>

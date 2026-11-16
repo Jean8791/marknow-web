@@ -8,6 +8,7 @@ import {ProfissionalService} from "@/services/agenda.service";
 import {DIAS_SEMANA, Disponibilidade, Profissional} from "@/types/agenda/agenda";
 import {notify} from "@/utils/toast-service";
 import {mensagemErro} from "@/utils/apiError";
+import PageHeader from "@/components/common/PageHeader";
 
 const resumoDisponibilidade = (lista: Disponibilidade[]) => {
     const porDia = new Map<number, string[]>();
@@ -28,13 +29,9 @@ export default function ProfissionalPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Profissionais</h1>
-                    <p className="text-sm text-gray-500 font-medium">Quem atende e em quais horários da semana.</p>
-                </div>
+            <PageHeader titulo="Profissionais" subtitulo="Quem atende e em quais horários da semana.">
                 <Link href="/profissional/new" className={BOTAO_PRIMARIO}><Plus size={20}/> Novo Profissional</Link>
-            </div>
+            </PageHeader>
 
             {loading ? (
                 <div className="flex h-48 items-center justify-center"><Loader2 className="animate-spin text-purple-600" size={32}/></div>
@@ -45,7 +42,7 @@ export default function ProfissionalPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {profissionais.map(p => (
-                        <div key={p.oid} className={`bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4 ${p.ativo ? '' : 'opacity-50'}`}>
+                        <div key={p.oid} className={`cartao p-6 space-y-4 ${p.ativo ? '' : 'opacity-50'}`}>
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex gap-4">
                                     <div className="p-3 h-fit rounded-2xl bg-purple-50 text-purple-600"><UserCog size={20}/></div>
