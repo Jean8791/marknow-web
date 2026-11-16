@@ -26,6 +26,23 @@ export default function DashboardPage() {
             <PageHeader titulo={nome ? `Olá, ${nome.split(' ')[0]}` : 'Dashboard'}
                         subtitulo={DESCRICAO_PERFIL[perfil] ?? 'Bem-vindo ao MarkNow.'}/>
 
+            {stats.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {stats.map((stat) => (
+                        <div key={stat.label}
+                             className="cartao p-6 hover:shadow-md transition-shadow">
+                            <div className={`inline-flex p-3 rounded-2xl mb-4 ${stat.bg} ${stat.color}`}>
+                                <stat.icon size={24}/>
+                            </div>
+                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
+                            <h3 className="text-2xl font-black text-gray-800 mt-1">
+                                {stat.value === undefined ? <Loader2 className="animate-spin text-gray-300" size={22}/> : (stat.value ?? '—')}
+                            </h3>
+                        </div>
+                    ))}
+                </div>
+            )}
+
             {temAgenda && (
                 <section className="cartao overflow-hidden">
                     <header className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
@@ -47,23 +64,6 @@ export default function DashboardPage() {
                         <GradeHorarios data={data} profissionais={grade.profissionais} agendamentos={grade.agendamentos}/>
                     )}
                 </section>
-            )}
-
-            {stats.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {stats.map((stat) => (
-                        <div key={stat.label}
-                             className="cartao p-6 hover:shadow-md transition-shadow">
-                            <div className={`inline-flex p-3 rounded-2xl mb-4 ${stat.bg} ${stat.color}`}>
-                                <stat.icon size={24}/>
-                            </div>
-                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
-                            <h3 className="text-2xl font-black text-gray-800 mt-1">
-                                {stat.value === undefined ? <Loader2 className="animate-spin text-gray-300" size={22}/> : (stat.value ?? '—')}
-                            </h3>
-                        </div>
-                    ))}
-                </div>
             )}
 
             {uso && (
