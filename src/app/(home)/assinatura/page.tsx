@@ -4,6 +4,7 @@ import {Calendar, Search, ShieldCheck} from 'lucide-react';
 import DataTable, {Column} from '@/components/common/DataTable';
 import {useAssinaturasListController} from './useAssinaturasListController';
 import {AssinaturaResponse} from "@/types/assinatura/assinaturaResponse";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function AssinaturaPage() {
     const {
@@ -98,14 +99,9 @@ export default function AssinaturaPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Assinaturas</h1>
-                    <p className="text-sm text-gray-500 font-medium">Controle financeiro e recorrência das unidades.</p>
-                </div>
-            </div>
+            <PageHeader titulo="Assinaturas" subtitulo="Controle financeiro e recorrência das unidades."/>
 
-            <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-sm ring-1 ring-purple-100">
                 <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18}/>
                     <input

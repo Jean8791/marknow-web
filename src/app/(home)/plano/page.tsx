@@ -5,6 +5,7 @@ import DataTable, {Column} from '@/components/common/DataTable';
 import Link from 'next/link';
 import {PlanoResponse} from "@/types/plano/planoResponse";
 import {usePlanoListController} from "@/app/(home)/plano/usePlanoListController";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function PlanoListPage() {
     const {
@@ -50,18 +51,14 @@ export default function PlanoListPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight uppercase">Planos de Assinatura</h1>
-                    <p className="text-sm text-gray-500 font-medium">Gerencie os pacotes e preços do sistema.</p>
-                </div>
+            <PageHeader titulo="Planos de Assinatura" subtitulo="Gerencie os pacotes e preços do sistema.">
                 <Link href="/plano/new"
-                      className="bg-[#2D0066] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-purple-900 transition-all shadow-lg shadow-purple-100">
+                      className="bg-marca text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-purple-100">
                     <Plus size={20}/> Novo Plano
                 </Link>
-            </div>
+            </PageHeader>
 
-            <div className="bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-sm ring-1 ring-purple-100">
                 <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18}/>
                     <input type="text" placeholder="Pesquisar planos..." onChange={(e) => handleSearch(e.target.value)}
